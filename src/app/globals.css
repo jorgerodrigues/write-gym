@@ -14,6 +14,42 @@
   }
 }
 
+.text-caption {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.text-caption {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.text-base {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.text-base-bold {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.text-large {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 36px;
+}
+
+.text-number {
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 32px;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);

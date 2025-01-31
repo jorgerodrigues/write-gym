@@ -1,4 +1,6 @@
 import type { Config } from "tailwindcss";
+import colors from "tailwindcss/colors";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 export default {
   content: [
@@ -8,9 +10,45 @@ export default {
   ],
   theme: {
     extend: {
+      fontSize: {
+        caption: ["12px", { lineHeight: "18px", fontWeight: "400" }],
+        base: ["16px", { lineHeight: "24px", fontWeight: "400" }],
+        large: ["24px", { lineHeight: "36px", fontWeight: "600" }],
+        number: ["32px", { lineHeight: "48px", fontWeight: "400" }],
+        ["base-bold"]: ["16px", { lineHeight: "24px", fontWeight: "500" }],
+      },
+      fontFamily: {
+        // Adding our fonts while keeping Tailwind defaults
+        display: ["Inter", ...defaultTheme.fontFamily.sans],
+        writing: ["JetBrains Mono", ...defaultTheme.fontFamily.mono],
+      },
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        text: {
+          dark: colors.slate[800],
+          light: colors.slate[600],
+          placeholder: colors.slate[400],
+          white: colors.white,
+        },
+        control: {
+          default: colors.indigo[900],
+          hover: colors.indigo[800],
+          secondary: colors.white,
+          secondaryHover: colors.slate[400],
+          disabled: colors.slate[200],
+        },
+        border: {
+          default: colors.slate[200],
+        },
+      },
+      // Custom spacing for our larger gaps while keeping Tailwind defaults
+      spacing: {
+        xSmall: "4px",
+        small: "16px",
+        large: "24px",
+        xLarge: "48px",
+      },
+      maxWidth: {
+        content: "42rem", // 672px - our main content width
       },
     },
   },
