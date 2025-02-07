@@ -3,11 +3,12 @@
 // import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import GoogleLogo from '../../../public/googleLogo.svg'
+import { Card } from '@/components/Card';
 
 export default function SignIn() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-bg-default">
-      <div className="flex flex-col max-w-md w-full gap-large p-large bg-white rounded-lg shadow">
+        <Card className='flex flex-col gap-small max-w-[500px] h-[200px] items-center'>
         <div className="flex flex-col text-center gap-xSmall">
           <h2 className="text-3xl font-bold text-text-dark">
             Welcome!
@@ -16,17 +17,17 @@ export default function SignIn() {
             Please sign in to continue
           </p>
         </div>
-
+        <div className='flex flex-1 w-full items-center justify-center'>
         <button
         //   onClick={() => signIn('google', { callbackUrl: '/' })}
           className={`
-w-full 
 flex 
+w-[400px]
 items-center justify-center 
-gap-3 px-4 py-2 
+gap-3 p-2 
 border border-gray-300 
-rounded-md shadow-sm 
-text-sm font-medium text-gray-700 
+rounded-md shadow 
+text-sm 
 bg-white hover:bg-gray-50 
 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
             `}
@@ -39,7 +40,9 @@ focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
           />
           Sign in with Google
         </button>
-      </div>
+        </div>
+
+    </Card>
     </div>
   );
 }
