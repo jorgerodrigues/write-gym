@@ -28,37 +28,37 @@ export async function POST(request: NextRequest) {
     });
 
     // Load the example first
-    const examples = await loadPrompt('src/prompts/examples/theme-example.md');
-    
+    const examples = await loadPrompt("src/prompts/examples/theme-example.md");
+
     // Load the main prompt and include the examples
-    const themePrompt = await loadPrompt('src/prompts/theme-prompt.md', {
+    const themePrompt = await loadPrompt("src/prompts/theme-prompt.md", {
       language,
     });
 
     const msg = await anthropic.messages.create({
       model: "claude-3-5-haiku-latest",
       max_tokens: 1024,
-      temperature: 0.8, // Slightly higher temperature for more creative themes
+      temperature: 0.9, // Slightly higher temperature for more creative themes
       messages: [
         {
           role: "user",
           content: [
+            { type: "text", text: themePrompt },
             { type: "text", text: examples },
-            { type: "text", text: themePrompt }
-          ]
-        }
-      ]
+          ],
+        },
+      ],
     });
 
     const content = msg.content[0];
     let themeData: ThemeResponse | undefined;
-    
-    if (content.type === 'text') {
+
+    if (content.type === "text") {
       themeData = JSON.parse(content.text);
     }
 
     if (!themeData) {
-      throw new Error('Invalid response format from AI');
+      throw new Error("Invalid response format from AI");
     }
 
     return NextResponse.json(themeData);
