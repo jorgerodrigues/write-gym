@@ -1,11 +1,14 @@
 "use client";
 
-// import { signIn } from 'next-auth/react';
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import GoogleLogo from "../../../public/googleLogo.svg";
 import { Card } from "@/components/Card";
 
-export default function SignIn() {
+export default function Login() {
+  const handleGoogleSignIn = async () => {
+    await signIn("google", { redirectTo: "/" });
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-bg-default">
       <Card className="flex flex-col gap-small max-w-[500px] h-[200px] items-center">
@@ -15,7 +18,7 @@ export default function SignIn() {
         </div>
         <div className="flex flex-1 w-full items-center justify-center">
           <button
-            //   onClick={() => signIn('google', { callbackUrl: '/' })}
+            onClick={handleGoogleSignIn}
             className={`
   flex 
   w-[400px]
