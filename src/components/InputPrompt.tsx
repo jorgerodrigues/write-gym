@@ -36,9 +36,9 @@ export const InputPrompt: React.FC = () => {
   const [isLoadingPrompt, setIsLoadingPrompt] = useState(false);
   const [, setError] = useState<undefined | null | string>();
 
-  // useEffect(() => {
-  //   handleGetTheme();
-  // }, []);
+  useEffect(() => {
+    handleGetTheme();
+  }, []);
 
   const handleGetTheme = async () => {
     setIsLoadingPrompt(true);
