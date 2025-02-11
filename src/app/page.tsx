@@ -40,7 +40,6 @@ export default function Home() {
   const [isLoadingFeedback, setIsLoadingFeedback] = useState(false);
   const [feedback, setFeedback] = useState<FeedbackResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [themeInfo] = useState<InputPrompt>();
 
   const t = useSearchParams();
 
