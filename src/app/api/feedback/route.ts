@@ -25,8 +25,10 @@ export async function POST(request: NextRequest) {
       apiKey: process.env.ANTHROPIC_API_KEY,
     });
 
-    const systemPrompt = await loadPrompt('src/prompts/examples/feedback-example.md');
-    const userPrompt = await loadPrompt('src/prompts/feedback-prompt.md', {
+    const systemPrompt = await loadPrompt(
+      "src/prompts/examples/feedback-example.md"
+    );
+    const userPrompt = await loadPrompt("src/prompts/feedback-prompt.md", {
       text,
       theme,
       language,
@@ -40,16 +42,16 @@ export async function POST(request: NextRequest) {
         {
           role: "user",
           content: [
+            { type: "text", text: userPrompt },
             { type: "text", text: systemPrompt },
-            { type: "text", text: userPrompt }
-          ]
-        }
-      ]
+          ],
+        },
+      ],
     });
 
     const content = msg.content[0];
     let feedbackData;
-    if (content.type === 'text') {
+    if (content.type === "text") {
       feedbackData = JSON.parse(content.text);
     }
 
@@ -61,4 +63,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-} 
+}

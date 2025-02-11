@@ -75,6 +75,7 @@ export const TextAreaInput: React.FC<TextAreaInputProps> = ({
         ref={textareaRef}
         tabIndex={0}
         required={required}
+        spellCheck={false}
         className={`
           flex
           min-h-[400px]

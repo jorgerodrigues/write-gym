@@ -18,8 +18,11 @@ And here is the user's paragraph:
 Carefully analyze the paragraph for grammar, spelling, punctuation, and style. Consider how well the writing adheres to the given theme.
 
 For each category (grammar, spelling, punctuation, and style), as well as for the overall assessment:
-1. Provide specific feedback, pointing out both strengths and areas for improvement.
+1. Provide specific feedback, pointing out both strengths and areas for improvement. Make sure that you list ALL POINTS that needs addressing. The goal is to be as specific and actionable as possible.
 2. Assign a score on a scale of 1 to 10, where 1 is poor and 10 is excellent.
+
+DO NOT GIVE GENERAL FEEDBACK - ALWAYS REFER BACK TO WHAT WAS WRITTEN.
+NEVER REFER TO "SEVERAL SENTENCES". make sure to specify what needs fixing with examples.
 
 Your feedback should be constructive, clear, and actionable. For the punctuation feedback, provide an array of specific suggestions if improvements are needed.
 
