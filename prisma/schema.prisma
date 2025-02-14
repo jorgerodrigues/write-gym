@@ -23,6 +23,45 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  prompt    Prompt[]
 
   @@map("user")
+}
+
+model Prompt {
+  id          String @id @unique @default(uuid())
+  theme       String
+  description String
+
+  user       User        @relation(fields: [userId], references: [id])
+  userId     String
+  infoPoints InfoPoint[]
+  tries      Try[]
+
+  @@map("prompt")
+}
+
+model InfoPoint {
+  id       String  @id @unique @default(uuid())
+  content  String
+  category String?
+  promptId String
+  prompt   Prompt  @relation(fields: [promptId], references: [id])
+
+  @@map("info-prompt")
+}
+
+model Try {
+  id               String  @id @unique @default(uuid())
+  essay            String
+  wordCount        Int?
+  overallScore     Int
+  grammarScore     Int
+  spellingScore    Int
+  punctuationScore Int
+  styleScore       Int
+  prompt           Prompt? @relation(fields: [promptId], references: [id])
+  promptId         String?
+
+  @@map("try")
 }
