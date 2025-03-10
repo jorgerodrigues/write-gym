@@ -50,24 +50,22 @@ export default function Home() {
     setError(null);
 
     try {
-      const response = await fetch("/api/feedback", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          text,
-          theme: t.get("theme") ?? "",
-          language: "Danish", // You might want to make this configurable
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to get feedback");
-      }
-
-      const data = await response.json();
-      setFeedback(data);
+      // const response = await fetch("/api/feedback", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     text,
+      //     theme: t.get("theme") ?? "",
+      //     language: "Danish", // You might want to make this configurable
+      //   }),
+      // });
+      // if (!response.ok) {
+      //   throw new Error("Failed to get feedback");
+      // }
+      // const data = await response.json();
+      // setFeedback(data);
     } catch (err) {
       setError("Failed to get feedback. Please try again.");
       console.error("Error getting feedback:", err);

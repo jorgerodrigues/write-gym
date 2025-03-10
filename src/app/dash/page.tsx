@@ -11,7 +11,7 @@ const fetchAllPrompts = async (userId: string) => {
         userId,
       },
       include: {
-        InfoPoints: true,
+        infoPoints: true,
       },
     });
 
