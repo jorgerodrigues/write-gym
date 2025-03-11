@@ -1,6 +1,6 @@
 import { IconProps } from "./Send";
 
-export const PersonIcon: React.FC<IconProps> = ({
+export const PlayIcon: React.FC<IconProps> = ({
   size = 20,
   color = "currentColor",
   strokeWidth = 2,
@@ -20,7 +20,6 @@ export const PersonIcon: React.FC<IconProps> = ({
     strokeWidth={strokeWidth}
     {...props}
   >
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-    <circle cx="12" cy="7" r="4" />
+    <polygon points="5 3 19 12 5 21 5 3" />
   </svg>
 );

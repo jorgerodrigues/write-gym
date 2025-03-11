@@ -3,8 +3,8 @@ import { DM_Mono, Lexend } from "next/font/google";
 import "./globals.css";
 import NavBar from "../components/NavBar";
 import { PersonIcon } from "../icons/Person";
-import { useSession } from "next-auth/react";
 import { auth } from "../auth";
+import { PlayIcon } from "@/icons/Play";
 
 const lexend = Lexend({
   variable: "--font-lexend",
@@ -32,15 +32,15 @@ export default async function RootLayout({
 
   const sideBarItems = [
     {
-      icon: <PersonIcon />,
-      label: "Profile",
-      id: "profile",
-      href: "/profile",
+      icon: <PlayIcon />,
+      label: "practice",
+      id: "practice",
+      href: "/practice",
     },
     {
       icon: <PersonIcon />,
-      label: "Profile2",
-      id: "p",
+      label: "profile",
+      id: "profile",
       href: "/profile",
     },
   ];

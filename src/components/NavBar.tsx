@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { FC, ReactNode } from "react";
 
 interface NavItemProps {
@@ -15,7 +16,7 @@ const NavItem: FC<NavItemProps> = ({ icon, isActive = false, onClick }) => {
         ${
           isActive
             ? "bg-blue-500 text-white"
-            : "text-gray-600 hover:bg-gray-100"
+            : "text-gray-600 hover:bg-slate-100"
         }`}
     >
       {icon}
@@ -34,8 +35,9 @@ interface NavBarProps {
 }
 
 const NavBar: FC<NavBarProps> = ({ items }) => {
-  const handleNavClick = (label: string) => {
-    console.log("Navigating to ", label);
+  const router = useRouter();
+  const handleNavClick = (id: string) => {
+    router.push(id);
   };
 
   return (
