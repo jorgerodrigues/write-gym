@@ -31,7 +31,7 @@ export const Button: React.FC<ButtonProps> = ({
   // Variant styles
   const variants = {
     primary:
-      "bg-control-default text-text-white hover:bg-control-hover focus:ring-control-default-900/20",
+      "bg-control-cta hover:bg-control-ctaHover focus:ring-control-default-900/20 text-text-dark",
     secondary:
       "bg-control-secondary text-text-dark border-border-default border hover:bg-control-secondaryHover focus:ring-control-secondary/10",
   };
@@ -64,7 +64,7 @@ export const Button: React.FC<ButtonProps> = ({
     "transition-colors duration-100",
     "focus:outline-none focus:ring-4",
     // Disabled state
-    "disabled:bg-control-disabled text-text-placeholder disabled:cursor-not-allowed",
+    "disabled:bg-control-disabled disabled:text-text-placeholder disabled:cursor-not-allowed",
     // Width
     fullWidth ? "w-full" : "",
     // Variant and size specific styles

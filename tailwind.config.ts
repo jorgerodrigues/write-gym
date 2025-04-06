@@ -27,12 +27,14 @@ export default {
           default: colors.neutral[50],
         },
         text: {
-          dark: colors.slate[600],
+          dark: colors.slate[800],
           light: colors.slate[400],
           placeholder: colors.slate[300],
           white: colors.white,
         },
         control: {
+          cta: colors.yellow[400],
+          ctaHover: colors.yellow[600],
           default: colors.slate[800],
           hover: colors.slate[600],
           secondary: colors.white,
