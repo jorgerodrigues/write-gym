@@ -27,7 +27,7 @@ export default {
           default: colors.neutral[50],
         },
         text: {
-          dark: colors.slate[800],
+          dark: colors.slate[600],
           light: colors.slate[400],
           placeholder: colors.slate[300],
           white: colors.white,
@@ -35,8 +35,8 @@ export default {
         control: {
           cta: colors.yellow[400],
           ctaHover: colors.yellow[600],
-          default: colors.slate[800],
-          hover: colors.slate[600],
+          default: colors.slate[600],
+          hover: colors.slate[400],
           secondary: colors.white,
           secondaryHover: colors.slate[400],
           disabled: colors.slate[200],
