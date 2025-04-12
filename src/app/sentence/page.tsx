@@ -655,7 +655,7 @@ export default function Page() {
         onShowAnswer={handleShowAnswer}
         answerDisplayed={showDefinition}
       />
-      <AnimatePresence>
+      <AnimatePresence mode={"wait"}>
         {showDefinition && (
           <Definition
             onWrong={handleWrong}
@@ -685,14 +685,12 @@ const Sentence: React.FC<SentenceProps> = ({
   return (
     <motion.div
       layout={"position"}
-      className={
-        "flex flex-col w-full items-center gap-xLarge max-w-[600px] xl:max-w-[850px]"
-      }
+      className={"flex flex-col items-center gap-xLarge w-[80ch]"}
     >
       <motion.p
         layout={"position"}
         className={
-          "text-[60px] font-medium text-text-dark text-center text-pretty"
+          "flex w-full flex-1 text-[60px] font-medium text-text-dark text-pretty"
         }
       >
         {content}
