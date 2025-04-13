@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
+import { useAnimatedText } from "@/hooks/useAnimatedText";
 import { AnimatePresence, motion } from "motion/react";
 import { useMemo, useState } from "react";
 
@@ -682,6 +683,8 @@ const Sentence: React.FC<SentenceProps> = ({
   onShowAnswer,
   answerDisplayed,
 }) => {
+  const contentValue = useAnimatedText(content);
+
   return (
     <motion.div
       layout={"position"}
@@ -693,7 +696,7 @@ const Sentence: React.FC<SentenceProps> = ({
           "flex w-full flex-1 text-[60px] font-medium text-text-dark text-pretty"
         }
       >
-        {content}
+        {contentValue}
       </motion.p>
       {!answerDisplayed && (
         <motion.div
