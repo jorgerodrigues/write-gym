@@ -689,6 +689,7 @@ const Sentence: React.FC<SentenceProps> = ({
     <motion.div
       layout={"position"}
       className={"flex flex-col items-center gap-xLarge w-[80ch]"}
+      exit={{ opacity: 0 }}
     >
       <motion.p
         layout={"position"}
