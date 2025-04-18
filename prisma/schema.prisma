@@ -21,11 +21,46 @@ model User {
   status    String  @default("ACTIVE")
   password  String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  prompt    Prompt[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  prompt         Prompt[]
+  SentenceOnUser SentenceOnUser[]
 
   @@map("user")
+}
+
+model SentenceOnUser {
+  id         String   @id @unique @default(uuid())
+  sentence   Sentence @relation(fields: [sentenceId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  sentenceId String
+  userId     String
+
+  @@map("sentence_on_user")
+}
+
+model Sentence {
+  id             String           @id @unique @default(uuid())
+  content        String
+  translation    String
+  userId         String?
+  words          Words[]
+  SentenceOnUser SentenceOnUser[]
+
+  @@map("sentence")
+}
+
+model Words {
+  id         String    @id @unique @default(uuid())
+  word       String
+  definition String
+  language   String
+  Sentence   Sentence? @relation(fields: [sentenceId], references: [id])
+  sentenceId String?
+
+  @@map("words")
 }
 
 model Prompt {
