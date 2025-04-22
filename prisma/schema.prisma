@@ -21,10 +21,11 @@ model User {
   status    String  @default("ACTIVE")
   password  String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  prompt    Prompt[]
-  Card      Card[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  prompt        Prompt[]
+  Card          Card[]
+  CardReviewLog CardReviewLog[]
 
   @@map("user")
 }
@@ -57,10 +58,28 @@ model Card {
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  CardReviewLog CardReviewLog[]
+
+  @@map("card")
+}
+
+model CardReviewLog {
+  id         String   @id @unique @default(uuid())
+  reviewDate DateTime @default(now())
+  rating     Int      @default(0) // rating 0 or 5
+
+  card   Card   @relation(fields: [cardId], references: [id])
+  cardId String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("card")
+  @@map("card_review_log")
 }
 
 model Words {
