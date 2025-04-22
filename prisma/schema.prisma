@@ -35,7 +35,7 @@ model Sentence {
   content     String
   translation String
   userId      String?
-  words       Words[]
+  words       Word[]
   Card        Card[]
 
   @@map("sentence")
@@ -51,6 +51,7 @@ model Card {
   easeFactor  Float    @default(2.5) // number used as a multiplier for the next interval calculation
   interval    Float    @default(1) // number of days until the next review
   nextDueDate DateTime @default(now()) // date and time of the next review
+  type        String   @default("sentence")
 
   sentence   Sentence @relation(fields: [sentenceId], references: [id])
   sentenceId String
@@ -82,7 +83,7 @@ model CardReviewLog {
   @@map("card_review_log")
 }
 
-model Words {
+model Word {
   id         String    @id @unique @default(uuid())
   word       String
   definition String
@@ -90,7 +91,7 @@ model Words {
   Sentence   Sentence? @relation(fields: [sentenceId], references: [id])
   sentenceId String?
 
-  @@map("words")
+  @@map("word")
 }
 
 model Prompt {
@@ -113,7 +114,7 @@ model InfoPoint {
   promptId String
   prompt   Prompt  @relation(fields: [promptId], references: [id])
 
-  @@map("info-prompt")
+  @@map("info_prompt")
 }
 
 model EssayPracticeRun {
