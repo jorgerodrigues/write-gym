@@ -21,35 +21,46 @@ model User {
   status    String  @default("ACTIVE")
   password  String
 
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  prompt         Prompt[]
-  SentenceOnUser SentenceOnUser[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  prompt    Prompt[]
+  Card      Card[]
 
   @@map("user")
 }
 
-model SentenceOnUser {
-  id         String   @id @unique @default(uuid())
-  sentence   Sentence @relation(fields: [sentenceId], references: [id])
-  user       User     @relation(fields: [userId], references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  sentenceId String
-  userId     String
-
-  @@map("sentence_on_user")
-}
-
 model Sentence {
-  id             String           @id @unique @default(uuid())
-  content        String
-  translation    String
-  userId         String?
-  words          Words[]
-  SentenceOnUser SentenceOnUser[]
+  id          String  @id @unique @default(uuid())
+  content     String
+  translation String
+  userId      String?
+  words       Words[]
+  Card        Card[]
 
   @@map("sentence")
+}
+
+// A card implements a basic practice card
+// if there is a sentence associated with it we use that as the card basis
+model Card {
+  id          String   @id @unique @default(uuid())
+  front       String?
+  back        String?
+  tags        String[]
+  easeFactor  Float    @default(2.5) // number used as a multiplier for the next interval calculation
+  interval    Float    @default(1) // number of days until the next review
+  nextDueDate DateTime @default(now()) // date and time of the next review
+
+  sentence   Sentence @relation(fields: [sentenceId], references: [id])
+  sentenceId String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("card")
 }
 
 model Words {
@@ -68,10 +79,10 @@ model Prompt {
   theme       String
   description String
 
-  user       User        @relation(fields: [userId], references: [id])
-  userId     String
-  infoPoints InfoPoint[]
-  tries      Try[]
+  user             User               @relation(fields: [userId], references: [id])
+  userId           String
+  infoPoints       InfoPoint[]
+  EssayPracticeRun EssayPracticeRun[]
 
   @@map("prompt")
 }
@@ -86,7 +97,7 @@ model InfoPoint {
   @@map("info-prompt")
 }
 
-model Try {
+model EssayPracticeRun {
   id               String  @id @unique @default(uuid())
   essay            String
   wordCount        Int?
@@ -98,5 +109,5 @@ model Try {
   prompt           Prompt? @relation(fields: [promptId], references: [id])
   promptId         String?
 
-  @@map("try")
+  @@map("essay_practice_run")
 }
