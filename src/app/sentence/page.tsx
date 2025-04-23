@@ -621,6 +621,7 @@ export default function Page() {
   const handleSkip = () => {
     handleNextSentence();
   };
+
   const handleShowAnswer = () => {
     setShowDefinition(true);
   };
