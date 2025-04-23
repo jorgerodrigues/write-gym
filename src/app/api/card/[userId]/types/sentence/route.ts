@@ -1,10 +1,19 @@
 import { CARD_TYPES } from "@/constants/cards";
 import prisma from "@/database/client";
+import { parseStringToNumber } from "@/utils/string/parseStringToNumber";
+import { NextRequest } from "next/server";
 
-export async function GET(request: Request) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ userId: string }> }
+) {
   try {
-    const userId = request.headers.get("userId") || "";
-    const skip = parseInt(request.headers.get("skip") || "0");
+    const searchParams = request.nextUrl.searchParams;
+    const skipQuery = searchParams.get("skip");
+    const skip = skipQuery ? parseStringToNumber(skipQuery) : 0;
+
+    const paramsData = await params;
+    const userId = paramsData.userId;
 
     if (!userId) {
       return new Response("User ID is required", { status: 400 });
@@ -37,7 +46,7 @@ const getLatestSentenceCards = async ({
   skip,
 }: {
   userId: string;
-  skip?: number;
+  skip?: number | null;
 }) => {
   try {
     const cards = await prisma.card.findMany({
@@ -56,11 +65,10 @@ const getLatestSentenceCards = async ({
         nextDueDate: "asc",
       },
       take: 5,
-      skip,
+      skip: skip ?? 0,
     });
     return cards;
-  } catch (error) {
-    console.error(error);
+  } catch {
     throw new Error("Failed to fetch latest sentence cards");
   }
 };
