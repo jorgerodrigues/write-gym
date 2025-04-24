@@ -3,6 +3,9 @@
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
 import { useAnimatedText } from "@/hooks/useAnimatedText";
+import { apiFetcher } from "@/lib/api/apiFetcher";
+import { Card as CardType } from "@/types/card";
+import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "motion/react";
 import { useMemo, useState } from "react";
 
@@ -610,6 +613,16 @@ export default function Page() {
   const [showDefinition, setShowDefinition] = useState(false);
   const [selectedSentenceIdx, setSelectedSentenceIdx] = useState(0);
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["decks"],
+    queryFn: () =>
+      apiFetcher<Array<CardType>>(
+        `api/card/53161625-0eb1-47dd-ae1f-6c49c00a0711/types/sentence`
+      ),
+  });
+
+  console.log({ data, isLoading });
+
   const handleNextSentence = () => {
     if (selectedSentenceIdx < fakeData.length - 1) {
       setSelectedSentenceIdx((prev) => prev + 1);
@@ -635,16 +648,47 @@ export default function Page() {
   };
 
   const selectedSentence = useMemo(() => {
-    if (selectedSentenceIdx > fakeData.length - 1) {
+    if (!data) {
+      return null;
+    }
+    if (selectedSentenceIdx > data?.length - 1) {
       return null;
     }
 
-    if (!fakeData[selectedSentenceIdx]) {
+    if (selectedSentenceIdx < 0) {
       return null;
     }
 
-    return fakeData[selectedSentenceIdx];
-  }, [selectedSentenceIdx]);
+    if (!data?.[selectedSentenceIdx]) {
+      return null;
+    }
+
+    const rawData = data[selectedSentenceIdx];
+    return {
+      id: rawData.id,
+      sentence: rawData.front,
+      translation: rawData.back,
+      definitions: rawData?.sentence?.words?.map((word) => ({
+        id: word.id,
+        word: word.word,
+        definition: word.definition,
+      })),
+    };
+
+    // if (selectedSentenceIdx > fakeData.length - 1) {
+    //   return null;
+    // }
+
+    // if (!fakeData[selectedSentenceIdx]) {
+    //   return null;
+    // }
+
+    // return fakeData[selectedSentenceIdx];
+  }, [data, selectedSentenceIdx]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <motion.div
@@ -663,7 +707,7 @@ export default function Page() {
             onWrong={handleWrong}
             onRight={handleRight}
             sentenceDefinition={selectedSentence?.translation ?? ""}
-            words={selectedSentence?.definitions || []}
+            words={selectedSentence?.definitions ?? []}
           />
         )}
       </AnimatePresence>
