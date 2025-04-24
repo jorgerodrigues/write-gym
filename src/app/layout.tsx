@@ -5,6 +5,7 @@ import NavBar from "../components/NavBar";
 import { PersonIcon } from "../icons/Person";
 import { auth } from "../auth";
 import { PlayIcon } from "@/icons/Play";
+import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
 
 const lexend = Lexend({
   variable: "--font-lexend",
@@ -32,7 +33,7 @@ export default async function RootLayout({
 
   const sideBarItems = [
     {
-      icon: <PlayIcon />,
+      icon: <PlayIcon size={16} />,
       label: "practice",
       id: "practice",
       href: "/practice",
@@ -50,8 +51,10 @@ export default async function RootLayout({
       <body
         className={`${lexend.variable} ${dmMono.variable} relative antialiased font-sans bg-bg-default`}
       >
-        <div className={"mr-xLarge"}>{children}</div>
-        {session && <NavBar items={sideBarItems} />}
+        <ReactQueryProvider>
+          <div className={"mr-xLarge"}>{children}</div>
+          {session && <NavBar items={sideBarItems} />}
+        </ReactQueryProvider>
       </body>
     </html>
   );
