@@ -12,7 +12,7 @@ const NavItem: FC<NavItemProps> = ({ icon, isActive = false, onClick }) => {
   return (
     <button
       onClick={() => onClick?.()}
-      className={`p-3 rounded-full transition-colors duration-200
+      className={`p-3 flex items-center justify-center rounded-full transition-colors duration-200
         ${
           isActive
             ? "bg-blue-500 text-white"
@@ -42,7 +42,7 @@ const NavBar: FC<NavBarProps> = ({ items }) => {
 
   return (
     <nav className="fixed top-1/2 -translate-y-1/2 right-4 border border-slate-200 backdrop-blur-2xl z-50 shadow-md px-xSmall py-small rounded-full">
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 items-center justify-center">
         {items.map((item) => (
           <NavItem
             key={item.label}

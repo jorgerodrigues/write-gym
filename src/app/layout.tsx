@@ -33,13 +33,13 @@ export default async function RootLayout({
 
   const sideBarItems = [
     {
-      icon: <PlayIcon size={16} />,
+      icon: <PlayIcon size={12} />,
       label: "practice",
       id: "practice",
       href: "/practice",
     },
     {
-      icon: <PersonIcon />,
+      icon: <PersonIcon size={12} />,
       label: "profile",
       id: "profile",
       href: "/profile",
