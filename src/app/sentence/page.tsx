@@ -5,21 +5,39 @@ import { Card } from "@/components/Card";
 import { useAnimatedText } from "@/hooks/useAnimatedText";
 import { apiFetcher } from "@/lib/api/apiFetcher";
 import { Card as CardType } from "@/types/card";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "motion/react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function Page() {
   const [showDefinition, setShowDefinition] = useState(false);
   const [selectedSentenceIdx, setSelectedSentenceIdx] = useState(0);
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["decks"],
+    queryKey: ["cards"],
     queryFn: () =>
       apiFetcher<Array<CardType>>(
         `api/card/types/sentence/53161625-0eb1-47dd-ae1f-6c49c00a0711`
       ),
   });
+
+  const { mutate: logCard } = useMutation({
+    mutationFn: (r: number) =>
+      apiFetcher(`api/card/${selectedCardId}/review`, {
+        method: "POST",
+        body: JSON.stringify({
+          rating: r,
+        }),
+      }),
+  });
+
+  useEffect(() => {
+    const cardInfo = data?.[selectedSentenceIdx];
+    if (cardInfo) {
+      setSelectedCardId(cardInfo.id);
+    }
+  }, [data, selectedSentenceIdx]);
 
   const handleNextSentence = () => {
     if (!data?.length) return;
@@ -40,11 +58,13 @@ export default function Page() {
   };
 
   const handleWrong = () => {
+    logCard(0);
     handleNextSentence();
     return;
   };
 
   const handleRight = () => {
+    logCard(5);
     handleNextSentence();
   };
 
