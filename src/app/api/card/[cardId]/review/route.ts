@@ -13,7 +13,12 @@ export const POST = async (req: Request, params: { params: Params }) => {
 
     const body: ReviewBody = await req.json();
 
-    if (!body || !body.rating || isNaN(Number(body.rating))) {
+    if (
+      !body ||
+      body.rating === null ||
+      body.rating === undefined ||
+      isNaN(Number(body.rating))
+    ) {
       return new Response(
         JSON.stringify({ data: null, error: "invalid-args" }),
         {
