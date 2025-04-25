@@ -1,5 +1,6 @@
 import { CARD_TYPES } from "@/constants/cards";
 import prisma from "@/database/client";
+import { generateCardsForUser } from "@/lib/cards/generateCardsForUser";
 import { parseStringToNumber } from "@/utils/string/parseStringToNumber";
 import { NextRequest } from "next/server";
 
@@ -35,7 +36,7 @@ export async function GET(
         { status: 500 }
       );
     }
-    return new Response("Failed to fetch latest sentence cards", {
+    return new Response(`Failed to fetch latest sentence cards: ${error}`, {
       status: 500,
     });
   }
@@ -67,6 +68,25 @@ const getLatestSentenceCards = async ({
       take: 10,
       skip: skip ?? 0,
     });
+
+    const cardsLeftForReview = await prisma.card.count({
+      where: {
+        userId,
+        type: CARD_TYPES.SENTENCE,
+        nextDueDate: {
+          lte: new Date(),
+        },
+      },
+    });
+
+    // This breaks the idempotency of the operation
+    // However it is a calculated measure to avoid having other solutions
+    // that would have been overly complicated for this point in time.
+    if (cardsLeftForReview <= 5) {
+      // Fire-and-forget: generateCardsForUser is intentionally not awaited
+      // because it performs a background task that does not affect the response.
+    }
+
     return cards;
   } catch {
     throw new Error("Failed to fetch latest sentence cards");
