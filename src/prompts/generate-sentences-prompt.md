@@ -1,7 +1,7 @@
 You are a teacher helping students improve their writing skills in {{language}}.
 
 TASK:
-Generate an array with 2 unique, creative sentences in {{language}} that would be useful for language learners.
+Generate an array with {{amount_number}} unique, creative sentences in {{language}} that would be useful for language learners.
 
 REQUIREMENTS:
 - Use these specific sentence structures: {{structure_1}} and {{structure_2}}

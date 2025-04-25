@@ -104,7 +104,7 @@ export { DefinitionSchema, SentenceDataSchema, SentenceDataArraySchema };
 export async function POST(request: Request) {
   // get userId and language from request body
   const body = await request.json();
-  const { userId, language } = body;
+  const { userId, language } = body as { userId: string; language: string };
 
   if (!userId || !language) {
     return new Response("missing-required-args", { status: 400 });
@@ -127,6 +127,8 @@ export async function POST(request: Request) {
     const topic_2 =
       possibleTopics[Math.floor(Math.random() * possibleTopics.length)];
 
+    const amount_number = "10";
+
     const prompt = await loadPrompt(
       "src/prompts/generate-sentences-prompt.md",
       {
@@ -137,6 +139,7 @@ export async function POST(request: Request) {
         context,
         topic_1,
         topic_2,
+        amount_number,
       }
     );
 
@@ -152,6 +155,7 @@ export async function POST(request: Request) {
         data: {
           content: sentence.sentence,
           translation: sentence.translation,
+          userId: userId,
           words: {
             createMany: {
               data: sentence.definitions.map((d) => ({
@@ -159,6 +163,13 @@ export async function POST(request: Request) {
                 definition: d.definition,
                 language,
               })),
+            },
+          },
+          Card: {
+            create: {
+              userId,
+              front: sentence.sentence,
+              back: sentence.translation,
             },
           },
         },
