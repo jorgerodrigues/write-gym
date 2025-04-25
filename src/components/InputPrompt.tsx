@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { InputPrompt as IInputPrompt } from "@/app/page";
+import { InputPrompt as IInputPrompt } from "@/app/practice/page";
 import { usePathname, useRouter } from "next/navigation";
 
 export interface InfoPoint {
