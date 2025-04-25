@@ -79,6 +79,9 @@ const getLatestSentenceCards = async ({
       },
     });
 
+    // This breaks the idempotency of the operation
+    // However it is a calculated measure to avoid having other solutions
+    // that would have been overly complicated for this point in time.
     if (cardsLeftForReview <= 5) {
       generateCardsForUser(userId, "da");
     }
