@@ -1,26 +1,8 @@
 import prisma from "@/database/client";
+import { SentenceDataArraySchema } from "@/types/schemas/sentence";
 import { loadPrompt } from "@/utils/prompt-loader";
 import { anthropic } from "@ai-sdk/anthropic";
 import { generateObject } from "ai";
-import { z } from "zod";
-
-// Definition schema for word definitions
-const DefinitionSchema = z.object({
-  word: z.string(),
-  definition: z.string(),
-});
-
-// Main schema for sentence data
-const SentenceDataSchema = z.object({
-  sentence: z.string(),
-  translation: z.string(),
-  definitions: z.array(DefinitionSchema),
-});
-
-// Schema for an array of sentence data
-const SentenceDataArraySchema = z.object({
-  sentences: z.array(SentenceDataSchema),
-});
 
 const possibleStructures = [
   "Questions",
@@ -99,12 +81,11 @@ const possibleTopics = [
 ];
 
 // Export the schemas
-export { DefinitionSchema, SentenceDataSchema, SentenceDataArraySchema };
 
 export async function POST(request: Request) {
   // get userId and language from request body
   const body = await request.json();
-  const { userId, language } = body;
+  const { userId, language } = body as { userId: string; language: string };
 
   if (!userId || !language) {
     return new Response("missing-required-args", { status: 400 });
@@ -127,6 +108,8 @@ export async function POST(request: Request) {
     const topic_2 =
       possibleTopics[Math.floor(Math.random() * possibleTopics.length)];
 
+    const amount_number = "10";
+
     const prompt = await loadPrompt(
       "src/prompts/generate-sentences-prompt.md",
       {
@@ -137,6 +120,7 @@ export async function POST(request: Request) {
         context,
         topic_1,
         topic_2,
+        amount_number,
       }
     );
 
@@ -152,6 +136,7 @@ export async function POST(request: Request) {
         data: {
           content: sentence.sentence,
           translation: sentence.translation,
+          userId: userId,
           words: {
             createMany: {
               data: sentence.definitions.map((d) => ({
@@ -159,6 +144,13 @@ export async function POST(request: Request) {
                 definition: d.definition,
                 language,
               })),
+            },
+          },
+          Card: {
+            create: {
+              userId,
+              front: sentence.sentence,
+              back: sentence.translation,
             },
           },
         },
@@ -176,25 +168,3 @@ export async function POST(request: Request) {
     return new Response("Internal Server Error", { status: 500 });
   }
 }
-
-// export async function GET(request: NextRequest) {
-//   try {
-//     // get the latest 10 sentences from the database
-//     const { object } = await generateObject({
-//       model: anthropic("claude-3-haiku-20240307"),
-//       schema: SentenceDataArraySchema,
-//       prompt: `
-//      Generate an array with 2 entries.
-//      The entries must be sentences in Danish.
-//      The sentences should be about everyday life and be realistic.
-//      The sentences should be written in common language.
-//      Include the translation and definition of each word.
-//      `,
-//     });
-
-//     return new Response(JSON.stringify(object));
-//   } catch (error) {
-//     console.error(error);
-//     return new Response("Internal Server Error", { status: 500 });
-//   }
-// }

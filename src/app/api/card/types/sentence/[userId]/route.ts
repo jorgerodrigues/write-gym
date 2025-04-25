@@ -64,7 +64,7 @@ const getLatestSentenceCards = async ({
       orderBy: {
         nextDueDate: "asc",
       },
-      take: 5,
+      take: 10,
       skip: skip ?? 0,
     });
     return cards;

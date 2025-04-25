@@ -17,12 +17,14 @@ export default function Page() {
     queryKey: ["decks"],
     queryFn: () =>
       apiFetcher<Array<CardType>>(
-        `api/card/53161625-0eb1-47dd-ae1f-6c49c00a0711/types/sentence`
+        `api/card/types/sentence/53161625-0eb1-47dd-ae1f-6c49c00a0711`
       ),
   });
 
   const handleNextSentence = () => {
-    if (selectedSentenceIdx < fakeData.length - 1) {
+    if (!data?.length) return;
+
+    if (selectedSentenceIdx < data?.length - 1) {
       setSelectedSentenceIdx((prev) => prev + 1);
     }
     setShowDefinition(false);
@@ -38,6 +40,7 @@ export default function Page() {
   };
 
   const handleWrong = () => {
+    handleNextSentence();
     return;
   };
 
