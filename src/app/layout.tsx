@@ -6,7 +6,7 @@ import { PersonIcon } from "../icons/Person";
 import { auth } from "../auth";
 import { PlayIcon } from "@/icons/Play";
 import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
-import { FileTextIcon } from "@/icons/FIleText";
+import { FileTextIcon } from "@/icons/FileText";
 
 const lexend = Lexend({
   variable: "--font-lexend",
@@ -35,13 +35,13 @@ export default async function RootLayout({
   const sideBarItems = [
     {
       icon: <PlayIcon size={13} />,
-      label: "Sentece review",
+      label: "Sentence review",
       id: "sentence",
       href: "/sentence",
     },
     {
       icon: <FileTextIcon size={13} />,
-      label: "practice",
+      label: "Writing practice",
       id: "practice",
       href: "/practice",
     },
