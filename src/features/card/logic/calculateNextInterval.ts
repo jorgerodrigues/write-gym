@@ -1,9 +1,13 @@
 import { Card } from "../types";
 
-export const calculateNextInterval = (card: Card) => {
+export const calculateNextInterval = (card: Card, rating: number) => {
   const { interval, repetitions } = card;
 
   if (repetitions === 0) {
+    return 1;
+  }
+
+  if (rating < 3) {
     return 1;
   }
 

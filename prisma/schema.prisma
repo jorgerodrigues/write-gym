@@ -45,8 +45,8 @@ model Sentence {
 // if there is a sentence associated with it we use that as the card basis
 model Card {
   id          String   @id @unique @default(uuid())
-  front       String?
-  back        String?
+  front       String
+  back        String
   tags        String[]
   repetitions Int      @default(0) // number of times the card has been successfuly reviewed
   easeFactor  Float    @default(2.5) // number used as a multiplier for the next interval calculation

@@ -9,14 +9,14 @@ export const CardSchema = z.object({
   tags: z.array(z.string()).optional(),
   easeFactor: z.number(),
   interval: z.number(),
-  nextDueDate: z.string().datetime().optional(),
+  nextDueDate: z.string().or(z.date()).optional(),
   userId: z.string().uuid(),
   sentenceId: z.string().uuid().optional(),
 
   sentence: SentenceSchema.optional(),
 
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
+  createdAt: z.string().or(z.date()),
+  updatedAt: z.string().or(z.date()),
 });
 
 export type Card = z.infer<typeof CardSchema>;

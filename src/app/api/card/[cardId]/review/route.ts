@@ -1,4 +1,5 @@
 import prisma from "@/database/client";
+import { card } from "@/features/card";
 
 type ReviewBody = {
   rating: number;
@@ -57,12 +58,21 @@ export const POST = async (req: Request, params: { params: Params }) => {
     // re-calculate next review date
     // For now we are hardcoding two days from now
     const nextReviewDate = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+    const updatedCard = card.processCardReview(
+      cardExists,
+      Number(body.rating),
+      nextReviewDate.getTime()
+    );
+
     await prisma.card.update({
       where: {
         id: cardId,
       },
       data: {
-        nextDueDate: nextReviewDate,
+        nextDueDate: updatedCard.newDueDate,
+        easeFactor: updatedCard.easeFactor,
+        interval: updatedCard.interval,
+        repetitions: updatedCard.repetitions,
       },
     });
 

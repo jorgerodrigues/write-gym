@@ -2,8 +2,13 @@ export const calculateNextDueDate = (
   currentDueDate: Date,
   interval: number
 ): Date => {
-  const nextDueDate = new Date(currentDueDate);
-  nextDueDate.setDate(nextDueDate.getDate() + interval);
-  nextDueDate.setHours(0, 0, 0, 0);
-  return nextDueDate;
+  let latestDueDate = new Date(currentDueDate);
+
+  if (latestDueDate.getTime() <= new Date().getTime()) {
+    latestDueDate = new Date();
+  }
+
+  latestDueDate.setDate(latestDueDate.getDate() + interval);
+  latestDueDate.setHours(0, 0, 0, 0);
+  return latestDueDate;
 };

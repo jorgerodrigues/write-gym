@@ -11,11 +11,12 @@ export const processCardReview = (
   const isSuccessful = rating >= 3;
   const newRepetitions = isSuccessful ? card.repetitions + 1 : 0;
   const newEaseFactor = calculateNewEaseFactor(card.easeFactor, rating);
-  const newInterval = calculateNextInterval(card);
+  const newInterval = calculateNextInterval(card, rating);
 
   const currentDueDate = card?.nextDueDate
     ? new Date(card.nextDueDate)
     : new Date();
+
   const newDueDate = calculateNextDueDate(
     new Date(currentDueDate),
     newInterval
@@ -25,7 +26,7 @@ export const processCardReview = (
     ...card,
     easeFactor: newEaseFactor,
     interval: newInterval,
-    dueDate: newDueDate,
+    newDueDate: newDueDate,
     repetitions: newRepetitions,
     lastReviewedAt: currentTime,
   };
