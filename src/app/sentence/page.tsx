@@ -4,8 +4,8 @@ import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
 import { useAnimatedText } from "@/hooks/useAnimatedText";
 import { apiFetcher } from "@/lib/api/apiFetcher";
-import { Card as CardType } from "@/types/card";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { Card as CardType } from "@/features/card/types";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
 

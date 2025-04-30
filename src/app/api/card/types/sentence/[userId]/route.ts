@@ -1,6 +1,5 @@
 import { CARD_TYPES } from "@/constants/cards";
 import prisma from "@/database/client";
-import { generateCardsForUser } from "@/lib/cards/generateCardsForUser";
 import { parseStringToNumber } from "@/utils/string/parseStringToNumber";
 import { NextRequest } from "next/server";
 
