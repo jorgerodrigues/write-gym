@@ -14,7 +14,7 @@ export default function Page() {
   const [selectedSentenceIdx, setSelectedSentenceIdx] = useState(0);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["cards"],
     queryFn: () =>
       apiFetcher<Array<CardType>>(
@@ -39,12 +39,18 @@ export default function Page() {
     }
   }, [data, selectedSentenceIdx]);
 
-  const handleNextSentence = () => {
+  const handleNextSentence = async () => {
     if (!data?.length) return;
 
     if (selectedSentenceIdx < data?.length - 1) {
       setSelectedSentenceIdx((prev) => prev + 1);
     }
+
+    if (selectedSentenceIdx === data?.length - 1) {
+      await refetch();
+      setSelectedSentenceIdx(0);
+    }
+
     setShowDefinition(false);
     return;
   };

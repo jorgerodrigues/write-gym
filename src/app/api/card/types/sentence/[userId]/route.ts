@@ -1,5 +1,6 @@
 import { CARD_TYPES } from "@/constants/cards";
 import prisma from "@/database/client";
+import { generateCardsForUser } from "@/lib/cards/generateCardsForUser";
 import { parseStringToNumber } from "@/utils/string/parseStringToNumber";
 import { NextRequest } from "next/server";
 
@@ -81,9 +82,10 @@ const getLatestSentenceCards = async ({
     // This breaks the idempotency of the operation
     // However it is a calculated measure to avoid having other solutions
     // that would have been overly complicated for this point in time.
-    if (cardsLeftForReview <= 5) {
+    if (cardsLeftForReview <= 10) {
       // Fire-and-forget: generateCardsForUser is intentionally not awaited
       // because it performs a background task that does not affect the response.
+      generateCardsForUser(userId, "da");
     }
 
     return cards;
