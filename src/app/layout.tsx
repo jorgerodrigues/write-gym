@@ -7,6 +7,7 @@ import { auth } from "../auth";
 import { PlayIcon } from "@/icons/Play";
 import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
 import { FileTextIcon } from "@/icons/FileText";
+import { ProfileButton } from "@/components/ProfileButton";
 
 const lexend = Lexend({
   variable: "--font-lexend",
@@ -62,6 +63,12 @@ export default async function RootLayout({
         <ReactQueryProvider>
           <div className={"mr-xLarge"}>{children}</div>
           {session && <NavBar items={sideBarItems} />}
+
+          {session && (
+            <div className={"absolute bottom-small right-small"}>
+              <ProfileButton session={session} />
+            </div>
+          )}
         </ReactQueryProvider>
       </body>
     </html>

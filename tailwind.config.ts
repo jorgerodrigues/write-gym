@@ -38,7 +38,7 @@ export default {
           default: colors.slate[600],
           hover: colors.slate[400],
           secondary: colors.white,
-          secondaryHover: colors.slate[400],
+          secondaryHover: colors.slate[200],
           disabled: colors.slate[200],
         },
         border: {
