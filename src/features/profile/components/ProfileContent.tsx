@@ -2,18 +2,12 @@
 
 import { Button } from "@/components/Button";
 import { useEffect, useState } from "react";
-import { Session } from "next-auth";
 import { PersonIcon } from "@/icons/Person";
-import Image from "next/image";
 import { CardSelect } from "@/components/CardSelect";
 import { TextInput } from "@/components/TextInput";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiFetcher } from "@/lib/api/apiFetcher";
-
-type ProfileContentProps = {
-  session: Session | null;
-  userId: string;
-};
+import { useUser } from "@/providers/LoggedUserProvider";
 
 type LanguagePreferenceMutationVars = {
   languageCode: string;
@@ -28,10 +22,17 @@ type LanguagePreferenceQueryData = {
   error: string | null;
 };
 
-export const ProfileContent = ({ session, userId }: ProfileContentProps) => {
+export const ProfileContent = () => {
   const [language, setLanguage] = useState<string>();
+  const [firstName, setFirstName] = useState<string | null | undefined>();
+  const [lastName, setLastName] = useState<string | null | undefined>();
+  const [email, setEmail] = useState<string | null | undefined>();
+  const { user, loading } = useUser();
+
+  const userId = user?.id;
 
   const { data: languageToPractice, isSuccess } = useQuery({
+    enabled: Boolean(userId),
     queryKey: ["userPreference", userId],
     queryFn: async () =>
       await apiFetcher<LanguagePreferenceQueryData>(
@@ -53,10 +54,13 @@ export const ProfileContent = ({ session, userId }: ProfileContentProps) => {
       }),
   });
 
-  const user = session?.user;
-  const userName = user?.name || "User";
-  const userEmail = user?.email || "email@example.com";
-  const userImage = user?.image;
+  useEffect(() => {
+    if (user) {
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
+      setEmail(user.email);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (languageToPractice?.data && isSuccess) {
@@ -76,28 +80,22 @@ export const ProfileContent = ({ session, userId }: ProfileContentProps) => {
     }
   };
 
+  if (loading) {
+    return <div>loading</div>;
+  }
+
   return (
     <div className="flex flex-col items-center w-full max-w-3xl mx-auto gap-large">
       <div className="flex flex-col items-center justify-center gap-xSmall w-full text-center">
         <div className="flex items-center justify-center rounded-xl overflow-hidden border-control-secondary">
-          {userImage ? (
-            <Image
-              src={userImage}
-              width={100}
-              height={100}
-              alt={`${userName}'s profile picture`}
-              className="object-cover rounded-xl"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center rounded-xl">
-              <PersonIcon size={64} />
-            </div>
-          )}
+          <div className="w-full h-full flex items-center justify-center rounded-xl">
+            <PersonIcon size={64} />
+          </div>
         </div>
 
         <div>
-          <h1 className="text-2xl font-bold mt-4">{userName}</h1>
-          <p className="text-text-light">{userEmail}</p>
+          <h1 className="text-2xl font-bold mt-4">{`${firstName} ${lastName}`}</h1>
+          <p className="text-text-light">{email}</p>
         </div>
       </div>
 
@@ -108,17 +106,17 @@ export const ProfileContent = ({ session, userId }: ProfileContentProps) => {
             label="First Name"
             type="text"
             placeholder="Your first name"
-            defaultValue={userName.split(" ")[0]}
+            defaultValue={firstName ?? ""}
             disabled
           />
           <TextInput
             label="Last Name"
             type="text"
             placeholder="Your last name"
-            defaultValue={userName.split(" ").slice(1).join(" ")}
+            defaultValue={lastName ?? ""}
             disabled
           />
-          <TextInput label="Email" type="email" value={userEmail} disabled />
+          <TextInput label="Email" type="email" value={email ?? ""} disabled />
         </div>
       </div>
 

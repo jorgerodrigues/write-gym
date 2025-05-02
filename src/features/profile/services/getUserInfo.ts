@@ -1,6 +1,18 @@
 import prisma from "@/database/client";
 
-export const getUserInfo = async (email: string) => {
+type Args = {
+  userId?: string;
+  email?: string;
+};
+
+export const getUserInfo = async ({ userId, email }: Args) => {
+  if (!userId && !email) {
+    return {
+      data: null,
+      error: "missing-args",
+    };
+  }
+
   try {
     const user = await prisma.user.findFirst({
       where: {

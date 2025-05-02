@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { DM_Mono, Lexend } from "next/font/google";
 import "./globals.css";
 import NavBar from "../components/NavBar";
-import { PersonIcon } from "../icons/Person";
 import { auth } from "../auth";
 import { PlayIcon } from "@/icons/Play";
 import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
 import { FileTextIcon } from "@/icons/FileText";
 import { ProfileButton } from "@/components/ProfileButton";
+import { LoggedUserProvider } from "@/providers/LoggedUserProvider";
 
 const lexend = Lexend({
   variable: "--font-lexend",
@@ -54,14 +54,16 @@ export default async function RootLayout({
         className={`${lexend.variable} ${dmMono.variable} relative antialiased font-sans bg-bg-default min-h-[100dvh]`}
       >
         <ReactQueryProvider>
-          <div className={"mr-xLarge"}>{children}</div>
-          {session && <NavBar items={sideBarItems} />}
+          <LoggedUserProvider userId={session?.user?.id ?? ""}>
+            <div className={"mr-xLarge"}>{children}</div>
+            {session && <NavBar items={sideBarItems} />}
 
-          {session && (
-            <div className={"absolute bottom-small right-small"}>
-              <ProfileButton session={session} />
-            </div>
-          )}
+            {session && (
+              <div className={"absolute bottom-small right-small"}>
+                <ProfileButton session={session} />
+              </div>
+            )}
+          </LoggedUserProvider>
         </ReactQueryProvider>
       </body>
     </html>
