@@ -52,7 +52,7 @@ const CardSelectOption: React.FC<CardSelectOptionProps> = ({
     sizes[size],
     "border",
     isSelected
-      ? "border-control-cta border bg-control-cta/40"
+      ? "border-control-cta border bg-control-cta/50"
       : "border-border-default",
     "shadow",
     "transition-all hover:shadow-xl",
