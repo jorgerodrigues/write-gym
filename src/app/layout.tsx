@@ -46,19 +46,12 @@ export default async function RootLayout({
       id: "practice",
       href: "/practice",
     },
-    {
-      icon: <PersonIcon size={13} />,
-      label: "profile",
-      id: "profile",
-      href: "/profile",
-      disabled: true,
-    },
   ];
 
   return (
     <html lang="en">
       <body
-        className={`${lexend.variable} ${dmMono.variable} relative antialiased font-sans bg-bg-default`}
+        className={`${lexend.variable} ${dmMono.variable} relative antialiased font-sans bg-bg-default min-h-[100dvh]`}
       >
         <ReactQueryProvider>
           <div className={"mr-xLarge"}>{children}</div>
