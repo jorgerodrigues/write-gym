@@ -4,12 +4,15 @@ import { PersonIcon } from "@/icons/Person";
 import { Session } from "next-auth";
 import Popover from "./Popover";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type ProfileButtonProps = {
   session?: Session | null;
 };
 
 export const ProfileButton: React.FC<ProfileButtonProps> = ({ session }) => {
+  const router = useRouter();
+
   if (!session) {
     return null;
   }
@@ -21,7 +24,21 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({ session }) => {
     return;
   };
 
+  const handleNavigateToProfile = () => {
+    if (session) {
+      router.push("/profile");
+    }
+  };
+
+  const title = session.user?.name || "User";
+
   const options = [
+    {
+      id: "2",
+      item: "Profile",
+      href: "/profile",
+      onClick: handleNavigateToProfile,
+    },
     {
       id: "1",
       item: "Log out",
@@ -36,7 +53,7 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({ session }) => {
       showArrow={false}
       side="left"
       align="end"
-      title={"Jorge Lopes"}
+      title={title}
     />
   );
 };

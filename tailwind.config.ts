@@ -29,7 +29,7 @@ export default {
         text: {
           dark: colors.slate[600],
           light: colors.slate[400],
-          placeholder: colors.slate[300],
+          extraLight: colors.slate[300],
           white: colors.white,
         },
         control: {

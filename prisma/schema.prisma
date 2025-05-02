@@ -26,6 +26,7 @@ model User {
   prompt        Prompt[]
   Card          Card[]
   CardReviewLog CardReviewLog[]
+  UserSettings  UserSettings[]
 
   @@map("user")
 }
@@ -131,4 +132,33 @@ model EssayPracticeRun {
   promptId         String?
 
   @@map("essay_practice_run")
+}
+
+model Settings {
+  id    String @id @unique @default(uuid())
+  name  String
+  type  String
+  scope String
+
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  userSettings UserSettings[]
+
+  @@map("settings")
+}
+
+model UserSettings {
+  id         String  @id @unique @default(uuid())
+  enabled    Boolean @default(true)
+  settingsId String
+  userId     String
+  data       String?
+
+  settings Settings @relation(fields: [settingsId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_settings")
 }
