@@ -218,7 +218,8 @@ const Definition: React.FC<DefinitionProps> = ({
         <div className={"flex flex-col w-full gap-small"}>
           {words.map((w) => {
             return (
-              <div key={w.word} className={"flex flex-col gap-xSmall"}>
+              <div key={w.word} className={"flex flex-col"}>
+                <p className={"font-medium capitalize"}>{w.word}: </p>
                 <p>{w.definition}</p>
               </div>
             );
