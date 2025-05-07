@@ -45,6 +45,7 @@ export default async function RootLayout({
       label: "Writing practice",
       id: "practice",
       href: "/practice",
+      disabled: true,
     },
   ];
 
