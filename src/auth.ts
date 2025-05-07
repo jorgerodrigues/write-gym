@@ -7,7 +7,6 @@ import { JWT } from "next-auth/jwt";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     session: async ({ session, token }) => {
-      console.log("sess");
       return await addUserIdToSession({ session, token });
     },
   },

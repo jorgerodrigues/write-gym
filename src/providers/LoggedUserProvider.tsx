@@ -3,6 +3,7 @@
 import { BasicUserInfo } from "@/features/profile/types";
 import { apiFetcher } from "@/lib/api/apiFetcher";
 import { APIReturnType } from "@/types/api/apiReturnType";
+import { LanguagePreferenceResponse } from "@/features/user-settings/types";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useMemo } from "react";
 
@@ -13,6 +14,7 @@ type UserContext = {
   lastName: string | null | undefined;
   practicingLanguages: Array<string>;
   activeSubscription?: boolean;
+  language?: string | null;
 };
 
 type LoggedUserProviderState = {
@@ -28,6 +30,7 @@ export const LoggedUserContext = createContext<LoggedUserProviderState>({
     lastName: "",
     practicingLanguages: [],
     activeSubscription: true,
+    language: null,
   },
   loading: true,
 });
@@ -41,7 +44,7 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
   userId,
   children,
 }) => {
-  const { data: userInfo, isLoading } = useQuery({
+  const { data: userInfo, isLoading: isLoadingUserInfo } = useQuery({
     enabled: Boolean(userId),
     staleTime: 30 * 1000,
     queryKey: ["userBasicInfo", userId],
@@ -51,7 +54,19 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
       ),
   });
 
+  const { data: languagePreference, isLoading: isLoadingLanguage } = useQuery({
+    enabled: Boolean(userId),
+    staleTime: 30 * 1000,
+    queryKey: ["userLanguagePreference", userId],
+    queryFn: async () =>
+      await apiFetcher<APIReturnType<LanguagePreferenceResponse>>(
+        `/api/user/${userId}/language-preference`
+      ),
+  });
+
   const stateValue = useMemo(() => {
+    const isLoading = isLoadingUserInfo || isLoadingLanguage;
+    
     if (!userInfo?.data) {
       return {
         user: {
@@ -61,12 +76,14 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
           lastName: "",
           practicingLanguages: [],
           activeSubscription: true,
+          language: null,
         },
         loading: isLoading,
       };
     }
 
     const user = userInfo.data;
+    const language = languagePreference?.data?.languageCode || null;
 
     return {
       user: {
@@ -76,10 +93,11 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
         lastName: user.lastName,
         practicingLanguages: [],
         activeSubscription: true,
+        language,
       },
       loading: isLoading,
     };
-  }, [userInfo, isLoading]);
+  }, [userInfo, languagePreference, isLoadingUserInfo, isLoadingLanguage]);
 
   return (
     <LoggedUserContext.Provider value={stateValue}>
@@ -89,8 +107,8 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
 };
 
 /**
- * This hook is used to access the current user and its settings such as email, language, companies, etc.
- * @returns User object containing id, email, language, companies.
+ * This hook is used to access the current user and its settings such as email, language, etc.
+ * @returns User object containing id, email, language, etc.
  * @returns loading: a state that determines whether the info provided by the hook is ready for use. Use it for showing loading states in the ui
  * */
 export const useUser = () => useContext(LoggedUserContext);

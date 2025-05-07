@@ -9,7 +9,7 @@ export default async function page({}: {
   return (
     <div
       className={
-        "flex flex-col gap-large 2xl:max-w-[60%] justify-center mx-auto"
+        "flex flex-col gap-large 2xl:max-w-[60%] justify-center mx-auto py-large"
       }
     >
       <Card className="">
