@@ -51,7 +51,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${lexend.variable} ${dmMono.variable} relative antialiased font-sans bg-bg-default min-h-[100dvh]`}
+        className={`${lexend.variable} ${dmMono.variable} relative antialiased font-sans bg-bg-default min-h-[100dvh] p-large`}
       >
         <ReactQueryProvider>
           <LoggedUserProvider userId={session?.user?.id ?? ""}>
@@ -59,7 +59,7 @@ export default async function RootLayout({
             {session && <NavBar items={sideBarItems} />}
 
             {session && (
-              <div className={"absolute bottom-small right-small"}>
+              <div className={"absolute bottom-small left-small"}>
                 <ProfileButton session={session} />
               </div>
             )}

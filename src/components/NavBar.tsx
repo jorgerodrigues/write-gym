@@ -43,7 +43,7 @@ const navBarStyles = {
   container:
     "fixed top-1/2 -translate-y-1/2 border border-border-default z-50 shadow-md px-xSmall py-small rounded-xl",
   position: {
-    right: "right-4",
+    // right: "right-4",
     left: "left-4",
   },
   items: "flex flex-col gap-2 items-center justify-center",
