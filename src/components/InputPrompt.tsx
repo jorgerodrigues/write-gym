@@ -50,6 +50,7 @@ export const InputPrompt: React.FC = () => {
         },
         body: JSON.stringify({
           language: user.language || "da", // Use user's language preference, fallback to Danish
+          nativeLanguage: user.nativeLanguage || "en", // Use user's native language, fallback to English
         }),
       });
 
@@ -84,7 +85,7 @@ export const InputPrompt: React.FC = () => {
     } finally {
       setIsLoadingPrompt(false);
     }
-  }, [user.language, router, pathName]);
+  }, [user.language, user.nativeLanguage, router, pathName]);
 
   useEffect(() => {
     handleGetTheme();

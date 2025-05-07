@@ -7,12 +7,13 @@ interface FeedbackRequest {
   text: string;
   theme: string;
   language: string;
+  nativeLanguage: string;
 }
 
 export async function POST(request: NextRequest) {
   try {
     const body = (await request.json()) as FeedbackRequest;
-    const { text, theme, language } = body;
+    const { text, theme, language, nativeLanguage } = body;
 
     if (!text || !theme || !language) {
       return NextResponse.json(
@@ -20,6 +21,8 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+    
+    const userNativeLanguage = nativeLanguage || "en";
 
     const anthropic = new Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY,
@@ -32,6 +35,7 @@ export async function POST(request: NextRequest) {
       text,
       theme,
       language,
+      nativeLanguage: userNativeLanguage,
     });
 
     const msg = await anthropic.messages.create({

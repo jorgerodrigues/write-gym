@@ -33,12 +33,18 @@ model User {
 }
 
 model Sentence {
-  id          String  @id @unique @default(uuid())
-  content     String
-  translation String
-  userId      String?
-  words       Word[]
-  Card        Card[]
+  id             String  @id @unique @default(uuid())
+  content        String
+  translation    String
+  userId         String?
+  language       String?
+  nativeLanguage String?
+
+  words Word[]
+  Card  Card[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("sentence")
 }
@@ -46,15 +52,17 @@ model Sentence {
 // A card implements a basic practice card
 // if there is a sentence associated with it we use that as the card basis
 model Card {
-  id          String   @id @unique @default(uuid())
-  front       String
-  back        String
-  tags        String[]
-  repetitions Int      @default(0) // number of times the card has been successfuly reviewed
-  easeFactor  Float    @default(2.5) // number used as a multiplier for the next interval calculation
-  interval    Float    @default(1) // number of days until the next review
-  nextDueDate DateTime @default(now()) // date and time of the next review
-  type        String   @default("sentence")
+  id             String   @id @unique @default(uuid())
+  front          String
+  back           String
+  tags           String[]
+  repetitions    Int      @default(0) // number of times the card has been successfuly reviewed
+  easeFactor     Float    @default(2.5) // number used as a multiplier for the next interval calculation
+  interval       Float    @default(1) // number of days until the next review
+  nextDueDate    DateTime @default(now()) // date and time of the next review
+  type           String   @default("sentence")
+  language       String   @default("en")
+  nativeLanguage String   @default("pt_br")
 
   sentence   Sentence @relation(fields: [sentenceId], references: [id])
   sentenceId String
@@ -87,12 +95,17 @@ model CardReviewLog {
 }
 
 model Word {
-  id         String    @id @unique @default(uuid())
-  word       String
-  definition String
-  language   String
+  id             String @id @unique @default(uuid())
+  word           String
+  definition     String
+  language       String
+  nativeLanguage String @default("en")
+
   Sentence   Sentence? @relation(fields: [sentenceId], references: [id])
   sentenceId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("word")
 }
@@ -107,6 +120,9 @@ model Prompt {
   infoPoints       InfoPoint[]
   EssayPracticeRun EssayPracticeRun[]
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("prompt")
 }
 
@@ -116,6 +132,9 @@ model InfoPoint {
   category String?
   promptId String
   prompt   Prompt  @relation(fields: [promptId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("info_prompt")
 }
@@ -131,6 +150,9 @@ model EssayPracticeRun {
   styleScore       Int
   prompt           Prompt? @relation(fields: [promptId], references: [id])
   promptId         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("essay_practice_run")
 }

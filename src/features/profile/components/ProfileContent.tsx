@@ -131,10 +131,13 @@ export const ProfileContent = () => {
 
         <div className="flex gap-small">
           <CardSelect
-            columns={4}
+            columns={2}
             options={[
               { id: "da", content: "🇩🇰 Danish" },
               { id: "en", content: "🇬🇧 English" },
+              { id: "it", content: "🇮🇹 Italian" },
+              { id: "es", content: "🇪🇸 Spanish" },
+              { id: "pt_br", content: "🇧🇷 Portuguese" },
             ]}
             onSelect={(id) => setLanguage(id)}
             selectedId={language}

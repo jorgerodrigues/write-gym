@@ -15,6 +15,7 @@ type UserContext = {
   practicingLanguages: Array<string>;
   activeSubscription?: boolean;
   language?: string | null;
+  nativeLanguage?: string;
 };
 
 type LoggedUserProviderState = {
@@ -31,6 +32,7 @@ export const LoggedUserContext = createContext<LoggedUserProviderState>({
     practicingLanguages: [],
     activeSubscription: true,
     language: null,
+    nativeLanguage: "en",
   },
   loading: true,
 });
@@ -45,14 +47,14 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
   children,
 }) => {
   const { data: userInfo, isLoading: isLoadingUserInfo } = useQuery({
-    enabled: Boolean(userId),
-    staleTime: 30 * 1000,
-    queryKey: ["userBasicInfo", userId],
-    queryFn: async () =>
-      await apiFetcher<APIReturnType<BasicUserInfo>>(
-        `/api/user/${userId}/info`
-      ),
-  });
+  enabled: Boolean(userId),
+  staleTime: 30 * 1000,
+  queryKey: ["userBasicInfo", userId],
+  queryFn: async () =>
+    await apiFetcher<APIReturnType<BasicUserInfo>>(
+      `/api/user/${userId}/info`
+    ),
+});
 
   const { data: languagePreference, isLoading: isLoadingLanguage } = useQuery({
     enabled: Boolean(userId),
@@ -77,6 +79,7 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
           practicingLanguages: [],
           activeSubscription: true,
           language: null,
+          nativeLanguage: "en",
         },
         loading: isLoading,
       };
@@ -94,6 +97,7 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
         practicingLanguages: [],
         activeSubscription: true,
         language,
+        nativeLanguage: user.nativeLanguage || "en",
       },
       loading: isLoading,
     };

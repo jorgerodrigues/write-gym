@@ -1,4 +1,5 @@
 import { generateCardsForUser } from "@/lib/cards/generateCardsForUser";
+import prisma from "@/database/client";
 
 export async function POST(request: Request) {
   // get userId and language from request body
@@ -10,7 +11,14 @@ export async function POST(request: Request) {
   }
 
   try {
-    const object = await generateCardsForUser(userId, language);
+    // Get user's native language
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { nativeLanguage: true }
+    });
+    const nativeLanguage = user?.nativeLanguage || "en";
+    
+    const object = await generateCardsForUser(userId, language, nativeLanguage);
 
     return new Response(JSON.stringify(object), {
       status: 200, // Or any other appropriate status code

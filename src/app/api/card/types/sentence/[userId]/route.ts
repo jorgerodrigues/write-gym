@@ -87,10 +87,17 @@ const getLatestSentenceCards = async ({
       // Get user's language preference or default to Danish
       const userLanguagePref = await getLanguagePreference(userId);
       const language = userLanguagePref?.languageCode || "da";
+      
+      // Get user's native language
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { nativeLanguage: true }
+      });
+      const nativeLanguage = user?.nativeLanguage || "en";
 
       // Fire-and-forget: generateCardsForUser is intentionally not awaited
       // because it performs a background task that does not affect the response.
-      generateCardsForUser(userId, language);
+      generateCardsForUser(userId, language, nativeLanguage);
     }
 
     return cards;

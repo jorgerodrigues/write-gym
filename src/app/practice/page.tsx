@@ -61,6 +61,7 @@ export default function Home() {
           text,
           theme: t.get("theme") ?? "",
           language: user.language || "da", // Using user's language preference, fallback to Danish
+          nativeLanguage: user.nativeLanguage || "en", // Using user's native language preference, fallback to English
         }),
       });
       if (!response.ok) {
