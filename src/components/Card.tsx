@@ -41,7 +41,7 @@ export const Card: React.FC<CardProps> = ({
   padding = "p-large", // Customizable padding
   blur = "backdrop-blur-xl", // Blur intensity
   opacity = "40", // Background opacity (20, 40, 60, 80)
-  border = false, // Show/hide border
+  border = true, // Show/hide border
   onClick, // Optional click handler
   hoverable = false, // Enable hover effects
 }) => {
@@ -52,7 +52,7 @@ export const Card: React.FC<CardProps> = ({
     `bg-white bg-opacity-${opacity}`,
     blur,
     padding,
-    border && "border border-border-default",
+    border && "border border-border-default/70",
     "shadow ",
     hoverable ? "transition-all hover:shadow-xl hover:scale-[1.02]" : "",
     onClick ? "cursor-pointer" : "",

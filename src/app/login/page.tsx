@@ -7,7 +7,7 @@ import { Card } from "@/components/Card";
 
 export default function Login() {
   const handleGoogleSignIn = async () => {
-    await signIn("google", { redirectTo: "/" });
+    await signIn("google", { redirectTo: "/dash" });
   };
   return (
     <div className="min-h-screen flex items-center justify-center bg-bg-default">
@@ -20,14 +20,14 @@ export default function Login() {
           <button
             onClick={handleGoogleSignIn}
             className={`
-  flex 
+  flex
   w-[400px]
-  items-center justify-center 
-  gap-3 p-2 
+  items-center justify-center
+  gap-3 p-2
   border border-border-default
-  rounded-md  
-  text-sm 
-  bg-white hover:bg-gray-50 
+  rounded-md
+  text-sm
+  bg-white hover:bg-gray-50
   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
   hover:cursor-pointer
             `}
