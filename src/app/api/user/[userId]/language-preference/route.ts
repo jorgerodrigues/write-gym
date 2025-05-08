@@ -1,4 +1,5 @@
 import { userSettings } from "@/features/user-settings";
+import { generateCardsForUser } from "@/lib/cards/generateCardsForUser";
 
 type RequestBody = {
   languageCode: string;
@@ -43,6 +44,7 @@ export async function PUT(
 
     // Verify user exists
     const user = await userSettings.getUserById(userId);
+    const userNativeLanguage = user?.nativeLanguage;
 
     if (!user) {
       return new Response(
@@ -61,6 +63,9 @@ export async function PUT(
       userId,
       validatedLanguageCode
     );
+
+    // generate cards for new language
+    generateCardsForUser(userId, validatedLanguageCode, userNativeLanguage);
 
     return new Response(
       JSON.stringify({

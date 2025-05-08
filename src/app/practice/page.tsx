@@ -6,6 +6,7 @@ import { FeedbackContent } from "@/components/FeedbackContent";
 import { InputPrompt } from "@/components/InputPrompt";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
+import { useUser } from "@/providers/LoggedUserProvider";
 
 // Type for the feedback response
 interface FeedbackResponse {
@@ -40,6 +41,7 @@ export default function Home() {
   const [isLoadingFeedback, setIsLoadingFeedback] = useState(false);
   const [feedback, setFeedback] = useState<FeedbackResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useUser();
 
   const t = useSearchParams();
 
@@ -58,7 +60,8 @@ export default function Home() {
         body: JSON.stringify({
           text,
           theme: t.get("theme") ?? "",
-          language: "Danish", // You might want to make this configurable
+          language: user.language || "da", // Using user's language preference, fallback to Danish
+          nativeLanguage: user.nativeLanguage || "en", // Using user's native language preference, fallback to English
         }),
       });
       if (!response.ok) {

@@ -82,7 +82,8 @@ const possibleTopics = [
 
 export const generateCardsForUser = async (
   userId: string,
-  language: string
+  language: string,
+  nativeLanguage: string = "en"
 ) => {
   const structure_1 =
     possibleStructures[Math.floor(Math.random() * possibleStructures.length)];
@@ -104,6 +105,7 @@ export const generateCardsForUser = async (
 
   const prompt = await loadPrompt("src/prompts/generate-sentences-prompt.md", {
     language,
+    nativeLanguage,
     structure_1,
     structure_2,
     level,
@@ -126,6 +128,8 @@ export const generateCardsForUser = async (
         content: sentence.sentence,
         translation: sentence.translation,
         userId: userId,
+        language: language,
+        nativeLanguage: nativeLanguage,
         words: {
           createMany: {
             data: sentence.definitions.map((d) => ({
@@ -140,6 +144,8 @@ export const generateCardsForUser = async (
             userId,
             front: sentence.sentence,
             back: sentence.translation,
+            language: language,
+            nativeLanguage: nativeLanguage,
           },
         },
       },

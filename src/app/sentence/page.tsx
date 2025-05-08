@@ -8,18 +8,21 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Card as CardType } from "@/features/card/types";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
+import { useUser } from "@/providers/LoggedUserProvider";
 
 export default function Page() {
   const [showDefinition, setShowDefinition] = useState(false);
   const [selectedSentenceIdx, setSelectedSentenceIdx] = useState(0);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+  const { user } = useUser();
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["cards"],
+    queryKey: ["cards", user.id],
     queryFn: () =>
       apiFetcher<Array<CardType>>(
-        `api/card/types/sentence/53161625-0eb1-47dd-ae1f-6c49c00a0711`
+        `api/card/types/sentence/${user.id}`
       ),
+    enabled: Boolean(user.id),
   });
 
   const { mutate: logCard } = useMutation({

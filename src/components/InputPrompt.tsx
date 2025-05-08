@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { InputPrompt as IInputPrompt } from "@/app/practice/page";
 import { usePathname, useRouter } from "next/navigation";
+import { useUser } from "@/providers/LoggedUserProvider";
 
 export interface InfoPoint {
   id?: string;
@@ -35,12 +36,9 @@ export const InputPrompt: React.FC = () => {
   const [themeInfo, setThemeInfo] = useState<IInputPrompt>();
   const [isLoadingPrompt, setIsLoadingPrompt] = useState(false);
   const [, setError] = useState<undefined | null | string>();
+  const { user } = useUser();
 
-  useEffect(() => {
-    handleGetTheme();
-  }, []);
-
-  const handleGetTheme = async () => {
+  const handleGetTheme = useCallback(async () => {
     setIsLoadingPrompt(true);
     setError(null);
 
@@ -51,7 +49,8 @@ export const InputPrompt: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          language: "Danish", // Match the language used in feedback
+          language: user.language || "da", // Use user's language preference, fallback to Danish
+          nativeLanguage: user.nativeLanguage || "en", // Use user's native language, fallback to English
         }),
       });
 
@@ -86,7 +85,11 @@ export const InputPrompt: React.FC = () => {
     } finally {
       setIsLoadingPrompt(false);
     }
-  };
+  }, [user.language, user.nativeLanguage, router, pathName]);
+
+  useEffect(() => {
+    handleGetTheme();
+  }, [handleGetTheme]);
 
   const formatInfoPoints = (points: Array<string>) => {
     return points.map((i, idx) => {

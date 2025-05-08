@@ -4,6 +4,7 @@ import { loadPrompt } from "@/utils/prompt-loader";
 
 interface ThemeRequest {
   language: string;
+  nativeLanguage: string;
 }
 
 interface ThemeResponse {
@@ -14,7 +15,7 @@ interface ThemeResponse {
 export async function POST(request: NextRequest) {
   try {
     const body = (await request.json()) as ThemeRequest;
-    const { language } = body;
+    const { language, nativeLanguage } = body;
 
     if (!language) {
       return NextResponse.json(
@@ -22,6 +23,8 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+    
+    const userNativeLanguage = nativeLanguage || "en";
 
     const anthropic = new Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY,
@@ -33,6 +36,7 @@ export async function POST(request: NextRequest) {
     // Load the main prompt and include the examples
     const themePrompt = await loadPrompt("src/prompts/theme-prompt.md", {
       language,
+      nativeLanguage: userNativeLanguage,
     });
 
     const msg = await anthropic.messages.create({

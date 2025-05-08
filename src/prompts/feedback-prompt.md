@@ -10,6 +10,11 @@ Here's the language the user was required to write:
 {{language}}
 </language>
 
+User's native language (for translations):
+<native_language>
+{{nativeLanguage}}
+</native_language>
+
 And here is the user's paragraph:
 <user_paragraph>
 {{text}}
@@ -28,7 +33,7 @@ Your feedback should be constructive, clear, and actionable. For the punctuation
 
 Before providing your final answer, use a <scratchpad> to think through your analysis for each category. Consider specific examples from the text to support your feedback and scores.
 
-Your responses must always be in English irrespective of the user's language.
+Your responses must always be in the user's native language ({{nativeLanguage}}).
 
 Present your final feedback in the following JSON format:
 

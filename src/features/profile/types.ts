@@ -12,6 +12,7 @@ export const BasicUserInfo = z.object({
   firstName: z.string().optional().nullable(),
   lastName: z.string().optional().nullable(),
   email: z.string().email(),
+  nativeLanguage: z.string().default("en"),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
 });

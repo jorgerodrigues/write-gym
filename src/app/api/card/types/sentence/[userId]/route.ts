@@ -2,6 +2,7 @@ import { CARD_TYPES } from "@/constants/cards";
 import prisma from "@/database/client";
 import { generateCardsForUser } from "@/lib/cards/generateCardsForUser";
 import { parseStringToNumber } from "@/utils/string/parseStringToNumber";
+import { getLanguagePreference } from "@/features/user-settings/services/getLanguagePreference";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -20,8 +21,15 @@ export async function GET(
       return new Response("User ID is required", { status: 400 });
     }
 
+    const userLanguage = await getLanguagePreference(userId);
+
+    if (!userLanguage || !userLanguage.languageCode) {
+      return new Response("no-language-set", { status: 400 });
+    }
+
     const cards = await getLatestSentenceCards({
       userId,
+      language: userLanguage.languageCode,
       skip,
     });
 
@@ -44,9 +52,11 @@ export async function GET(
 
 const getLatestSentenceCards = async ({
   userId,
+  language,
   skip,
 }: {
   userId: string;
+  language: string;
   skip?: number | null;
 }) => {
   try {
@@ -54,6 +64,7 @@ const getLatestSentenceCards = async ({
       where: {
         userId,
         type: CARD_TYPES.SENTENCE,
+        language,
       },
       include: {
         sentence: {
@@ -83,9 +94,20 @@ const getLatestSentenceCards = async ({
     // However it is a calculated measure to avoid having other solutions
     // that would have been overly complicated for this point in time.
     if (cardsLeftForReview <= 10) {
+      // Get user's language preference or default to Danish
+      const userLanguagePref = await getLanguagePreference(userId);
+      const language = userLanguagePref?.languageCode || "da";
+
+      // Get user's native language
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { nativeLanguage: true },
+      });
+      const nativeLanguage = user?.nativeLanguage || "en";
+
       // Fire-and-forget: generateCardsForUser is intentionally not awaited
       // because it performs a background task that does not affect the response.
-      generateCardsForUser(userId, "da");
+      generateCardsForUser(userId, language, nativeLanguage);
     }
 
     return cards;

@@ -8,6 +8,7 @@ import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
 import { FileTextIcon } from "@/icons/FileText";
 import { ProfileButton } from "@/components/ProfileButton";
 import { LoggedUserProvider } from "@/providers/LoggedUserProvider";
+import { HomeIcon } from "@/icons/Home";
 
 const lexend = Lexend({
   variable: "--font-lexend",
@@ -35,6 +36,12 @@ export default async function RootLayout({
 
   const sideBarItems = [
     {
+      icon: <HomeIcon size={13} />,
+      label: "Go home - dash",
+      id: "dash",
+      href: "/dash",
+    },
+    {
       icon: <PlayIcon size={13} />,
       label: "Sentence review",
       id: "sentence",
@@ -52,12 +59,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${lexend.variable} ${dmMono.variable} relative antialiased font-sans bg-bg-default min-h-[100dvh] p-large`}
+        className={`${lexend.variable} ${dmMono.variable} relative antialiased font-sans bg-bg-default min-h-[100dvh] px-large`}
       >
         <ReactQueryProvider>
           <LoggedUserProvider userId={session?.user?.id ?? ""}>
             <div className={"mr-xLarge"}>{children}</div>
-            {session && <NavBar items={sideBarItems} />}
+            {session && <NavBar position="left" items={sideBarItems} />}
 
             {session && (
               <div className={"absolute bottom-small left-small"}>
