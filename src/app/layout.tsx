@@ -64,7 +64,7 @@ export default async function RootLayout({
         <ReactQueryProvider>
           <LoggedUserProvider userId={session?.user?.id ?? ""}>
             <div className={"mr-xLarge"}>{children}</div>
-            {session && <NavBar items={sideBarItems} />}
+            {session && <NavBar position="left" items={sideBarItems} />}
 
             {session && (
               <div className={"absolute bottom-small left-small"}>
