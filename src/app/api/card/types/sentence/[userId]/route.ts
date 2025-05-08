@@ -21,8 +21,15 @@ export async function GET(
       return new Response("User ID is required", { status: 400 });
     }
 
+    const userLanguage = await getLanguagePreference(userId);
+
+    if (!userLanguage || !userLanguage.languageCode) {
+      return new Response("no-language-set", { status: 400 });
+    }
+
     const cards = await getLatestSentenceCards({
       userId,
+      language: userLanguage.languageCode,
       skip,
     });
 
@@ -45,9 +52,11 @@ export async function GET(
 
 const getLatestSentenceCards = async ({
   userId,
+  language,
   skip,
 }: {
   userId: string;
+  language: string;
   skip?: number | null;
 }) => {
   try {
@@ -55,6 +64,7 @@ const getLatestSentenceCards = async ({
       where: {
         userId,
         type: CARD_TYPES.SENTENCE,
+        language,
       },
       include: {
         sentence: {
@@ -87,11 +97,11 @@ const getLatestSentenceCards = async ({
       // Get user's language preference or default to Danish
       const userLanguagePref = await getLanguagePreference(userId);
       const language = userLanguagePref?.languageCode || "da";
-      
+
       // Get user's native language
       const user = await prisma.user.findUnique({
         where: { id: userId },
-        select: { nativeLanguage: true }
+        select: { nativeLanguage: true },
       });
       const nativeLanguage = user?.nativeLanguage || "en";
 
