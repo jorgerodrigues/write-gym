@@ -9,6 +9,7 @@ import { FileTextIcon } from "@/icons/FileText";
 import { ProfileButton } from "@/components/ProfileButton";
 import { LoggedUserProvider } from "@/providers/LoggedUserProvider";
 import { HomeIcon } from "@/icons/Home";
+import { PostHogProvider } from "@/providers/PostHogProvider";
 
 const lexend = Lexend({
   variable: "--font-lexend",
@@ -61,18 +62,20 @@ export default async function RootLayout({
       <body
         className={`${lexend.variable} ${dmMono.variable} relative antialiased font-sans bg-bg-default min-h-[100dvh] px-large`}
       >
-        <ReactQueryProvider>
-          <LoggedUserProvider userId={session?.user?.id ?? ""}>
-            <div className={"mr-xLarge"}>{children}</div>
-            {session && <NavBar position="left" items={sideBarItems} />}
+        <PostHogProvider>
+          <ReactQueryProvider>
+            <LoggedUserProvider userId={session?.user?.id ?? ""}>
+              <div className={"mr-xLarge"}>{children}</div>
+              {session && <NavBar position="left" items={sideBarItems} />}
 
-            {session && (
-              <div className={"absolute bottom-small left-small"}>
-                <ProfileButton session={session} />
-              </div>
-            )}
-          </LoggedUserProvider>
-        </ReactQueryProvider>
+              {session && (
+                <div className={"absolute bottom-small left-small"}>
+                  <ProfileButton session={session} />
+                </div>
+              )}
+            </LoggedUserProvider>
+          </ReactQueryProvider>
+        </PostHogProvider>
       </body>
     </html>
   );
