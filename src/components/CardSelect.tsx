@@ -1,4 +1,6 @@
-import { ReactNode, useState, useEffect } from "react";
+"use client";
+import { isSea } from "node:sea";
+import { ReactNode } from "react";
 
 type CardSelectOptions = {
   id: string;
@@ -47,7 +49,6 @@ const CardSelectOption: React.FC<CardSelectOptionProps> = ({
     "flex flex-col w-full",
     "rounded-lg",
     "bg-white",
-    isSelected ? "bg-opacity-80" : "bg-opacity-40",
     "backdrop-blur-xl",
     sizes[size],
     "border",
@@ -78,6 +79,7 @@ const CardSelectOption: React.FC<CardSelectOptionProps> = ({
  * A card-based selection component similar to radio buttons
  * where users can select one option from multiple cards.
  */
+
 export const CardSelect: React.FC<CardSelectProps> = ({
   options,
   onSelect,
@@ -87,19 +89,7 @@ export const CardSelect: React.FC<CardSelectProps> = ({
   size = "md",
   columns = 1,
 }) => {
-  const [internalSelectedId, setInternalSelectedId] = useState<
-    string | undefined
-  >(selectedId);
-
-  // Update internal state when the selectedId prop changes
-  useEffect(() => {
-    if (selectedId !== undefined) {
-      setInternalSelectedId(selectedId);
-    }
-  }, [selectedId]);
-
   const handleSelect = (id: string) => {
-    setInternalSelectedId(id);
     onSelect(id);
   };
 
@@ -127,7 +117,7 @@ export const CardSelect: React.FC<CardSelectProps> = ({
           <CardSelectOption
             key={option.id}
             option={option}
-            isSelected={internalSelectedId === option.id}
+            isSelected={selectedId === option.id}
             onSelect={() => handleSelect(option.id)}
             size={size}
           />

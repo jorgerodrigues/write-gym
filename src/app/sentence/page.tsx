@@ -19,9 +19,7 @@ export default function Page() {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["cards", user.id],
     queryFn: () =>
-      apiFetcher<Array<CardType>>(
-        `api/card/types/sentence/${user.id}`
-      ),
+      apiFetcher<Array<CardType>>(`api/card/types/sentence/${user.id}`),
     enabled: Boolean(user.id),
   });
 
@@ -108,6 +106,14 @@ export default function Page() {
 
   if (isLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (!selectedSentence) {
+    return (
+      <div>
+        Generating new sentences. Wait a couple of minutes or come back later
+      </div>
+    );
   }
 
   return (
