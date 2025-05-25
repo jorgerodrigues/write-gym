@@ -2,22 +2,80 @@
 import { Button } from "@/components/Button";
 import { LANGUAGES } from "@/constants/languages";
 import { LanguageSelector } from "@/features/intro/components/LanguageSelector";
+import { LanguagePreferenceMutationVars } from "@/features/profile/components/ProfileContent";
+import { apiFetcher } from "@/lib/api/apiFetcher";
+import { useUser } from "@/providers/LoggedUserProvider";
 import { languageFlagFromCode } from "@/utils/language/languageFlagFromCode";
+import { useMutation } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function IntroPage() {
+  const router = useRouter();
+  const { user } = useUser();
   const [usersLanguage, setUsersLanguage] = useState<string | null>(null);
   const [languageToLearn, setLanguageToLearn] = useState<string | null>(null);
   const [step, setStep] = useState(0);
-  const possibleLanguages = Object.entries(LANGUAGES).map(([code, name]) => ({
-    id: code,
-    content: `${languageFlagFromCode(code)}  ${name}`,
-  }));
+
+  const { mutate: updateLanguageToLearn } = useMutation<
+    unknown,
+    Error,
+    LanguagePreferenceMutationVars
+  >({
+    mutationFn: async (vars) =>
+      await apiFetcher(`/api/user/${user.id}/language-preference`, {
+        method: "PUT",
+        body: JSON.stringify({
+          languageCode: vars.languageCode,
+        }),
+      }),
+  });
+
+  const { mutate: updateNativeLanguage } = useMutation<
+    unknown,
+    Error,
+    LanguagePreferenceMutationVars
+  >({
+    mutationFn: async (vars) =>
+      await apiFetcher(`/api/user/${user.id}/native-language`, {
+        method: "PUT",
+        body: JSON.stringify({
+          languageCode: vars.languageCode,
+        }),
+      }),
+  });
+
+  const possibleLanguagesToLearn = Object.entries(LANGUAGES).map(
+    ([code, name]) => ({
+      id: code,
+      content: `${languageFlagFromCode(code)}  ${name}`,
+    })
+  );
+
+  const possibleBaseLanguages = Object.entries(LANGUAGES)
+    .map(([code, name]) => ({
+      id: code,
+      content: `${languageFlagFromCode(code)}  ${name}`,
+    }))
+    .filter((l) => l.id === "EN" || l.id === "PT");
 
   const handleNextStep = () => {
+    if (!usersLanguage) {
+      return null;
+    }
+
     if (step === 0) {
+      updateNativeLanguage({ languageCode: usersLanguage });
       setStep(1);
+    }
+
+    if (step === 1) {
+      if (!languageToLearn) {
+        return null;
+      }
+      updateLanguageToLearn({ languageCode: languageToLearn });
+      router.push("/dash");
     }
   };
 
@@ -69,7 +127,7 @@ export default function IntroPage() {
             >
               <LanguageSelector
                 titleContent={"Which one of these languages do you speak best?"}
-                possibleLanguages={possibleLanguages}
+                possibleLanguages={possibleBaseLanguages}
                 selectedLanguage={usersLanguage ?? ""}
                 onSelectLanguage={setUsersLanguage}
               />
@@ -93,7 +151,7 @@ export default function IntroPage() {
             >
               <LanguageSelector
                 titleContent={"Which one language would you like to practice?"}
-                possibleLanguages={possibleLanguages}
+                possibleLanguages={possibleLanguagesToLearn}
                 selectedLanguage={languageToLearn ?? ""}
                 onSelectLanguage={setLanguageToLearn}
               />
