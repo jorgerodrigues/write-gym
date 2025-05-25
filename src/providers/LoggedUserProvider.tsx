@@ -6,6 +6,7 @@ import { APIReturnType } from "@/types/api/apiReturnType";
 import { LanguagePreferenceResponse } from "@/features/user-settings/types";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useMemo } from "react";
+import { useRouter } from "next/navigation";
 
 type UserContext = {
   id: string;
@@ -46,15 +47,16 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
   userId,
   children,
 }) => {
+  const router = useRouter();
   const { data: userInfo, isLoading: isLoadingUserInfo } = useQuery({
-  enabled: Boolean(userId),
-  staleTime: 30 * 1000,
-  queryKey: ["userBasicInfo", userId],
-  queryFn: async () =>
-    await apiFetcher<APIReturnType<BasicUserInfo>>(
-      `/api/user/${userId}/info`
-    ),
-});
+    enabled: Boolean(userId),
+    staleTime: 30 * 1000,
+    queryKey: ["userBasicInfo", userId],
+    queryFn: async () =>
+      await apiFetcher<APIReturnType<BasicUserInfo>>(
+        `/api/user/${userId}/info`
+      ),
+  });
 
   const { data: languagePreference, isLoading: isLoadingLanguage } = useQuery({
     enabled: Boolean(userId),
@@ -68,7 +70,7 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
 
   const stateValue = useMemo(() => {
     const isLoading = isLoadingUserInfo || isLoadingLanguage;
-    
+
     if (!userInfo?.data) {
       return {
         user: {
@@ -80,6 +82,7 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
           activeSubscription: true,
           language: null,
           nativeLanguage: "en",
+          onboardingCompleted: false,
         },
         loading: isLoading,
       };
@@ -98,10 +101,15 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
         activeSubscription: true,
         language,
         nativeLanguage: user.nativeLanguage || "en",
+        onboardingCompleted: user.onboardingCompleted,
       },
       loading: isLoading,
     };
   }, [userInfo, languagePreference, isLoadingUserInfo, isLoadingLanguage]);
+
+  if (!stateValue.user.onboardingCompleted && !stateValue.loading) {
+    router.push("/onboarding");
+  }
 
   return (
     <LoggedUserContext.Provider value={stateValue}>

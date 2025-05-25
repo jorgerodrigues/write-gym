@@ -34,6 +34,7 @@ export const getUserInfo = async ({ userId, email }: Args) => {
         nativeLanguage: true,
         createdAt: true,
         updatedAt: true,
+        onboardingCompleted: true,
       },
     });
     return {

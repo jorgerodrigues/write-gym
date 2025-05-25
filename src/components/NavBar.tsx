@@ -30,7 +30,7 @@ interface NavBarProps {
 const navItemStyles = {
   base: "p-3 flex items-center justify-center rounded-xl transition-colors duration-200",
   variant: {
-    active: "bg-slate-500 text-white stroke-2",
+    active: "bg-slate-200  stroke-2",
     default: "text-gray-600 hover:bg-slate-200",
   },
   state: {

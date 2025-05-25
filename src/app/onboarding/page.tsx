@@ -46,6 +46,13 @@ export default function IntroPage() {
       }),
   });
 
+  const { mutate: markOnboardingComplete } = useMutation<unknown, Error>({
+    mutationFn: async () =>
+      await apiFetcher(`/api/user/${user.id}/onboarding`, {
+        method: "POST",
+      }),
+  });
+
   const possibleLanguagesToLearn = Object.entries(LANGUAGES).map(
     ([code, name]) => ({
       id: code,
@@ -75,6 +82,7 @@ export default function IntroPage() {
         return null;
       }
       updateLanguageToLearn({ languageCode: languageToLearn });
+      markOnboardingComplete();
       router.push("/dash");
     }
   };

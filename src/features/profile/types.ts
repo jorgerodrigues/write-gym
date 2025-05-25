@@ -15,6 +15,7 @@ export const BasicUserInfo = z.object({
   nativeLanguage: z.string().default("en"),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
+  onboardingCompleted: z.boolean().default(false),
 });
 
 export type BasicUserInfo = z.infer<typeof BasicUserInfo>;

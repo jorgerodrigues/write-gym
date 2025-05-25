@@ -14,13 +14,14 @@ datasource db {
 }
 
 model User {
-  id             String  @id @unique @default(uuid())
-  email          String  @unique
-  firstName      String?
-  lastName       String?
-  status         String  @default("ACTIVE")
-  password       String
-  nativeLanguage String  @default("en")
+  id                  String  @id @unique @default(uuid())
+  email               String  @unique
+  firstName           String?
+  lastName            String?
+  status              String  @default("ACTIVE")
+  password            String
+  nativeLanguage      String  @default("en")
+  onboardingCompleted Boolean @default(false)
 
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
