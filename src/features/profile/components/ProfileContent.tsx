@@ -9,11 +9,11 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiFetcher } from "@/lib/api/apiFetcher";
 import { useUser } from "@/providers/LoggedUserProvider";
 
-type LanguagePreferenceMutationVars = {
+export type LanguagePreferenceMutationVars = {
   languageCode: string;
 };
 
-type LanguagePreferenceQueryData = {
+export type LanguagePreferenceQueryData = {
   data: {
     userId: string;
     languageCode: string;
