@@ -6,8 +6,8 @@ type RequestBody = {
 type Params = { userId: string };
 
 /**
- * Updates a user's language preference setting
- * This endpoint creates or updates a user_setting entry related to practice_language
+ * Update a user's native language
+ * This endpoint updates the user's native language .
  */
 export async function PUT(
   req: Request,
