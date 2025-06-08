@@ -5,8 +5,9 @@ import { apiFetcher } from "@/lib/api/apiFetcher";
 import { APIReturnType } from "@/types/api/apiReturnType";
 import { LanguagePreferenceResponse } from "@/features/user-settings/types";
 import { useQuery } from "@tanstack/react-query";
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { useOnboardingRedirect } from "@/hooks/useOnboardingRedirect";
 
 type UserContext = {
   id: string;
@@ -107,9 +108,11 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
     };
   }, [userInfo, languagePreference, isLoadingUserInfo, isLoadingLanguage]);
 
-  if (!stateValue.user.onboardingCompleted && !stateValue.loading) {
-    router.push("/onboarding");
-  }
+  useOnboardingRedirect({
+    userInfoReceived: Boolean(userInfo?.data),
+    onboardingCompleted: stateValue.user.onboardingCompleted,
+    loading: stateValue.loading,
+  });
 
   return (
     <LoggedUserContext.Provider value={stateValue}>
