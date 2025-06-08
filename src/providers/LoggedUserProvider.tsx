@@ -5,8 +5,7 @@ import { apiFetcher } from "@/lib/api/apiFetcher";
 import { APIReturnType } from "@/types/api/apiReturnType";
 import { LanguagePreferenceResponse } from "@/features/user-settings/types";
 import { useQuery } from "@tanstack/react-query";
-import { createContext, useContext, useEffect, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { createContext, useContext, useMemo } from "react";
 import { useOnboardingRedirect } from "@/hooks/useOnboardingRedirect";
 
 type UserContext = {
@@ -48,7 +47,6 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
   userId,
   children,
 }) => {
-  const router = useRouter();
   const { data: userInfo, isLoading: isLoadingUserInfo } = useQuery({
     enabled: Boolean(userId),
     staleTime: 30 * 1000,

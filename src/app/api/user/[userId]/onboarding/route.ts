@@ -1,16 +1,21 @@
 import { onboarding } from "@/features/onboarding";
 import { userSettings } from "@/features/user-settings";
+import { generateCardsForUser } from "@/lib/cards/generateCardsForUser";
 
 type Params = {
   userId: string;
 };
 
 export async function POST(
-  _: Request,
+  req: Request,
   { params }: { params: Promise<Params> }
 ) {
   try {
     const { userId } = await params;
+
+    const { languageToLearn } = (await req.json()) as {
+      languageToLearn?: string;
+    };
 
     const user = await userSettings.getUserById(userId);
 
@@ -35,6 +40,10 @@ export async function POST(
           "Content-Type": "application/json",
         },
       });
+    }
+
+    if (languageToLearn) {
+      generateCardsForUser(userId, languageToLearn, user.nativeLanguage);
     }
 
     return new Response(
