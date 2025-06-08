@@ -62,9 +62,9 @@ export default async function RootLayout({
       <body
         className={`${lexend.variable} ${dmMono.variable} relative antialiased font-sans bg-bg-default min-h-[100dvh] px-large`}
       >
-        <PostHogProvider>
-          <ReactQueryProvider>
-            <LoggedUserProvider userId={session?.user?.id ?? ""}>
+        <ReactQueryProvider>
+          <LoggedUserProvider userId={session?.user?.id ?? ""}>
+            <PostHogProvider>
               <div className={"mr-xLarge"}>{children}</div>
               {session && <NavBar position="left" items={sideBarItems} />}
 
@@ -73,9 +73,9 @@ export default async function RootLayout({
                   <ProfileButton session={session} />
                 </div>
               )}
-            </LoggedUserProvider>
-          </ReactQueryProvider>
-        </PostHogProvider>
+            </PostHogProvider>
+          </LoggedUserProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );

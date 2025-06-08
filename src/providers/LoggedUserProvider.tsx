@@ -5,7 +5,7 @@ import { apiFetcher } from "@/lib/api/apiFetcher";
 import { APIReturnType } from "@/types/api/apiReturnType";
 import { LanguagePreferenceResponse } from "@/features/user-settings/types";
 import { useQuery } from "@tanstack/react-query";
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 
 type UserContext = {
@@ -108,10 +108,19 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
   }, [userInfo, languagePreference, isLoadingUserInfo, isLoadingLanguage]);
 
   useEffect(() => {
-    if (userInfo && !stateValue.user.onboardingCompleted && !stateValue.loading) {
+    if (
+      userInfo &&
+      !stateValue.user.onboardingCompleted &&
+      !stateValue.loading
+    ) {
       router.push("/onboarding");
     }
-  }, [userInfo, stateValue.user.onboardingCompleted, stateValue.loading, router]);
+  }, [
+    userInfo,
+    stateValue.user.onboardingCompleted,
+    stateValue.loading,
+    router,
+  ]);
 
   return (
     <LoggedUserContext.Provider value={stateValue}>
