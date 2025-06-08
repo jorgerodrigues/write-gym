@@ -107,9 +107,11 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
     };
   }, [userInfo, languagePreference, isLoadingUserInfo, isLoadingLanguage]);
 
-  if (userInfo && !stateValue.user.onboardingCompleted && !stateValue.loading) {
-    router.push("/onboarding");
-  }
+  useEffect(() => {
+    if (userInfo && !stateValue.user.onboardingCompleted && !stateValue.loading) {
+      router.push("/onboarding");
+    }
+  }, [userInfo, stateValue.user.onboardingCompleted, stateValue.loading, router]);
 
   return (
     <LoggedUserContext.Provider value={stateValue}>
