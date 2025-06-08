@@ -116,7 +116,7 @@ export const generateCardsForUser = async (
   });
 
   const { object } = await generateObject({
-    model: anthropic("claude-3-5-haiku-latest"),
+    model: anthropic("claude-3-5-sonnet-latest"),
     schema: SentenceDataArraySchema,
     temperature: 0.76,
     prompt,

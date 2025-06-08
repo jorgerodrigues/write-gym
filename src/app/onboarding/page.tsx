@@ -50,6 +50,9 @@ export default function IntroPage() {
     mutationFn: async () =>
       await apiFetcher(`/api/user/${user.id}/onboarding`, {
         method: "POST",
+        body: JSON.stringify({
+          languageToLearn,
+        }),
       }),
   });
 

@@ -108,35 +108,36 @@ export default function Page() {
     return <div>Loading...</div>;
   }
 
-  if (!selectedSentence) {
-    return (
-      <div>
-        Generating new sentences. Wait a couple of minutes or come back later
-      </div>
-    );
-  }
-
   return (
     <motion.div
       className={`w-full flex flex-col items-center justify-center h-[100vh] gap-xLarge`}
       layout={"position"}
     >
-      <Sentence
-        content={selectedSentence?.sentence ?? ""}
-        onSkip={handleSkip}
-        onShowAnswer={handleShowAnswer}
-        answerDisplayed={showDefinition}
-      />
-      <AnimatePresence mode={"wait"}>
-        {showDefinition && (
-          <Definition
-            onWrong={handleWrong}
-            onRight={handleRight}
-            sentenceDefinition={selectedSentence?.translation ?? ""}
-            words={selectedSentence?.definitions ?? []}
+      {!selectedSentence && (
+        <div>
+          Generating new sentences. Wait a couple of minutes or come back later
+        </div>
+      )}
+      {selectedSentence && (
+        <>
+          <Sentence
+            content={selectedSentence?.sentence ?? ""}
+            onSkip={handleSkip}
+            onShowAnswer={handleShowAnswer}
+            answerDisplayed={showDefinition}
           />
-        )}
-      </AnimatePresence>
+          <AnimatePresence mode={"wait"}>
+            {showDefinition && (
+              <Definition
+                onWrong={handleWrong}
+                onRight={handleRight}
+                sentenceDefinition={selectedSentence?.translation ?? ""}
+                words={selectedSentence?.definitions ?? []}
+              />
+            )}
+          </AnimatePresence>
+        </>
+      )}
     </motion.div>
   );
 }
