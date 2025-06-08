@@ -31,4 +31,4 @@ AVOID SIMILARITY:
    - Add a short explanation of its meaning in context in {{nativeLanguage}}.
    - Note any alternate meanings or nuances.
    - Mention any grammatical considerations (gender, conjugation, etc.) in {{nativeLanguage}}.
-</output
+</output>
