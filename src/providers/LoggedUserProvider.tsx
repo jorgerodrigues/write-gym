@@ -7,6 +7,7 @@ import { LanguagePreferenceResponse } from "@/features/user-settings/types";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { useOnboardingRedirect } from "@/hooks/useOnboardingRedirect";
 
 type UserContext = {
   id: string;
@@ -107,20 +108,11 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
     };
   }, [userInfo, languagePreference, isLoadingUserInfo, isLoadingLanguage]);
 
-  useEffect(() => {
-    if (
-      userInfo &&
-      !stateValue.user.onboardingCompleted &&
-      !stateValue.loading
-    ) {
-      router.push("/onboarding");
-    }
-  }, [
-    userInfo,
-    stateValue.user.onboardingCompleted,
-    stateValue.loading,
-    router,
-  ]);
+  useOnboardingRedirect({
+    userInfoReceived: Boolean(userInfo?.data),
+    onboardingCompleted: stateValue.user.onboardingCompleted,
+    loading: stateValue.loading,
+  });
 
   return (
     <LoggedUserContext.Provider value={stateValue}>
