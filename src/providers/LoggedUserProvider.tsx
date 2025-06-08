@@ -107,7 +107,7 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
     };
   }, [userInfo, languagePreference, isLoadingUserInfo, isLoadingLanguage]);
 
-  if (!stateValue.user.onboardingCompleted && !stateValue.loading) {
+  if (userInfo && !stateValue.user.onboardingCompleted && !stateValue.loading) {
     router.push("/onboarding");
   }
 
