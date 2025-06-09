@@ -5,7 +5,7 @@ import NavBar from "../components/NavBar";
 import { auth } from "../auth";
 import { PlayIcon } from "@/icons/Play";
 import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
-import { FileTextIcon } from "@/icons/FileText";
+import { FileIcon } from "@/icons/FileIcon";
 import { ProfileButton } from "@/components/ProfileButton";
 import { LoggedUserProvider } from "@/providers/LoggedUserProvider";
 import { HomeIcon } from "@/icons/Home";
@@ -49,7 +49,7 @@ export default async function RootLayout({
       href: "/sentence",
     },
     {
-      icon: <FileTextIcon size={13} />,
+      icon: <FileIcon size={13} />,
       label: "Writing practice",
       id: "practice",
       href: "/practice",
