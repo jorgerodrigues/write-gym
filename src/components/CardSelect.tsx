@@ -1,5 +1,4 @@
 "use client";
-import { isSea } from "node:sea";
 import { ReactNode } from "react";
 
 type CardSelectOptions = {
