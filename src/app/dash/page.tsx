@@ -1,4 +1,3 @@
-import { Card } from "@/components/Card";
 import { PracticeNowCard } from "@/features/dashboard/components/PracticeNowCard";
 
 export default async function page({}: {
@@ -12,10 +11,6 @@ export default async function page({}: {
       }
     >
       <PracticeNowCard />
-      <Card>
-        <h2 className={"text-large"}>Your practice stats:</h2>
-        <p>Coming soon</p>
-      </Card>
     </div>
   );
 }
