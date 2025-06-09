@@ -22,12 +22,11 @@ Write Right is a modern web application designed to help users practice and lear
 ## 🛠 Tech Stack
 
 ### Frontend
-- **Next.js 15** - React framework with App Router
-- **React 19** - Latest React features
+- **Next.js** - React framework with App Router
+- **React** - Latest React features
 - **TypeScript** - Type-safe development
 - **Tailwind CSS** - Utility-first styling
 - **Framer Motion** - Smooth animations and transitions
-- **Radix UI** - Accessible component primitives
 
 ### Backend & Database
 - **Prisma** - Database ORM and migrations
@@ -82,8 +81,6 @@ npx prisma generate
 # Run database migrations
 npx prisma db push
 
-# (Optional) Seed the database
-npx prisma db seed
 ```
 
 5. Start the development server:
