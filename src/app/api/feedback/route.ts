@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { loadPrompt } from "@/utils/prompt-loader";
+import { loadPromptFromPath } from "@/utils/prompt-loader";
 
 // Type for the expected request body
 interface FeedbackRequest {
@@ -21,22 +21,25 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    
+
     const userNativeLanguage = nativeLanguage || "en";
 
     const anthropic = new Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY,
     });
 
-    const systemPrompt = await loadPrompt(
+    const systemPrompt = await loadPromptFromPath(
       "src/prompts/examples/feedback-example.md"
     );
-    const userPrompt = await loadPrompt("src/prompts/feedback-prompt.md", {
-      text,
-      theme,
-      language,
-      nativeLanguage: userNativeLanguage,
-    });
+    const userPrompt = await loadPromptFromPath(
+      "src/prompts/feedback-prompt.md",
+      {
+        text,
+        theme,
+        language,
+        nativeLanguage: userNativeLanguage,
+      }
+    );
 
     const msg = await anthropic.messages.create({
       model: "claude-3-5-sonnet-20241022",

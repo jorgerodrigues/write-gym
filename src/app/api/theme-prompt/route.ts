@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { loadPrompt } from "@/utils/prompt-loader";
+import { loadPromptFromPath } from "@/utils/prompt-loader";
 
 interface ThemeRequest {
   language: string;
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    
+
     const userNativeLanguage = nativeLanguage || "en";
 
     const anthropic = new Anthropic({
@@ -31,13 +31,18 @@ export async function POST(request: NextRequest) {
     });
 
     // Load the example first
-    const examples = await loadPrompt("src/prompts/examples/theme-example.md");
+    const examples = await loadPromptFromPath(
+      "src/prompts/examples/theme-example.md"
+    );
 
     // Load the main prompt and include the examples
-    const themePrompt = await loadPrompt("src/prompts/theme-prompt.md", {
-      language,
-      nativeLanguage: userNativeLanguage,
-    });
+    const themePrompt = await loadPromptFromPath(
+      "src/prompts/theme-prompt.md",
+      {
+        language,
+        nativeLanguage: userNativeLanguage,
+      }
+    );
 
     const msg = await anthropic.messages.create({
       model: "claude-3-5-haiku-latest",

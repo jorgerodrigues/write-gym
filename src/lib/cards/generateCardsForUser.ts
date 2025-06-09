@@ -1,6 +1,7 @@
 import prisma from "@/database/client";
+import { generateSentencesPrompt } from "@/prompts/generate-sentences-prompt";
 import { SentenceDataArraySchema } from "@/types/schemas/sentence";
-import { loadPrompt } from "@/utils/prompt-loader";
+import { loadPromptFromConstant } from "@/utils/prompt-loader";
 import { anthropic } from "@ai-sdk/anthropic";
 import { generateObject } from "ai";
 
@@ -103,7 +104,9 @@ export const generateCardsForUser = async (
 
   const amount_number = "10";
 
-  const prompt = await loadPrompt("src/prompts/generate-sentences-prompt.md", {
+  const promptStr = generateSentencesPrompt;
+
+  const prompt = await loadPromptFromConstant(promptStr, {
     language,
     nativeLanguage,
     structure_1,
