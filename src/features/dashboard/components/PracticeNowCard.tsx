@@ -18,9 +18,9 @@ export const PracticeNowCard = () => {
           <h2 className="text-large ">Start Practicing {languageName}</h2>
           <p className="mb-4">Put in some reps! Practice some sentences</p>
           <div className={"flex w-full justify-start py-small"}>
-            <Button aria-label="start-practice">
-              <Link href={"/sentence"}>Practice now</Link>
-            </Button>
+            <Link href={"/sentence"}>
+              <Button aria-label="start-practice"> Practice Now</Button>
+            </Link>
           </div>
         </div>
       </>
