@@ -1,0 +1,46 @@
+# <type>(<scope>): <subject>
+#
+# <body>
+#
+# <footer>
+
+# Type should be one of the following:
+# * feat: A new feature
+# * fix: A bug fix
+# * docs: Documentation only changes
+# * style: Changes that do not affect the meaning of the code
+# * refactor: A code change that neither fixes a bug nor adds a feature
+# * perf: A code change that improves performance
+# * test: Adding missing tests or correcting existing tests
+# * chore: Changes to the build process or auxiliary tools
+#
+# Scope should be one of the following (optional):
+# * auth: Authentication related changes
+# * ui: User interface changes
+# * api: API related changes
+# * db: Database related changes
+# * ai: AI/ML related changes
+# * config: Configuration changes
+#
+# Subject line should:
+# * Use imperative mood ("Add feature" not "Added feature")
+# * Not end with a period
+# * Be 50 characters or less
+#
+# Body should:
+# * Explain what and why, not how
+# * Wrap at 72 characters
+# * Use imperative mood
+#
+# Footer should contain:
+# * Breaking changes (if any)
+# * Issue references (e.g., "Closes #123")
+#
+# Example:
+# feat(auth): add Google OAuth integration
+#
+# Implement Google OAuth login to replace manual authentication.
+# This improves user experience by eliminating the need for
+# password management and reduces security risks.
+#
+# Closes #45
