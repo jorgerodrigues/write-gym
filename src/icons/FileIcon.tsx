@@ -1,6 +1,6 @@
 import { IconProps } from "./Send";
 
-export const FileTextIcon: React.FC<IconProps> = ({
+export const FileIcon: React.FC<IconProps> = ({
   size = 20,
   color = "currentColor",
   strokeWidth = 2,
