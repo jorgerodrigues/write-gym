@@ -29,9 +29,9 @@ interface NavBarProps {
 }
 
 const navItemStyles = {
-  base: "p-3 flex items-center justify-center rounded-xl transition-colors duration-200",
+  base: "p-3 flex items-center justify-center rounded-xl transition-colors duration-200 cursor-pointer",
   variant: {
-    active: "bg-slate-200  stroke-2",
+    active: "bg-slate-200/70  stroke-1",
     default: "text-gray-600 hover:bg-slate-200",
   },
   state: {
@@ -42,12 +42,15 @@ const navItemStyles = {
 
 const navBarStyles = {
   container:
-    "fixed top-1/2 -translate-y-1/2 border border-border-default z-50 shadow-md px-xSmall py-small rounded-xl",
+    "fixed z-50 bg-white/20 shadow-xl backdrop-blur-md px-xSmall py-xSmall md:py-small rounded-xl " +
+    "bottom-4 left-1/2 -translate-x-1/2 " +
+    "md:top-1/2 md:-translate-y-1/2 md:translate-x-0 md:bottom-auto md:left-auto",
   position: {
-    left: "left-4",
-    right: "right-4",
+    left: "md:left-4",
+    right: "md:right-4",
   },
-  items: "flex flex-col gap-2 items-center justify-center",
+  items:
+    "flex gap-2 items-center justify-center " + "flex-row " + "md:flex-col",
 };
 
 const NavItem: FC<NavItemProps> = ({

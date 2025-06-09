@@ -24,8 +24,8 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Write gym!",
-  description: "Do it and learn faster!",
+  title: "FalaGym",
+  description: "Do it. Get better. Faster!",
 };
 
 export default async function RootLayout({
@@ -37,19 +37,19 @@ export default async function RootLayout({
 
   const sideBarItems = [
     {
-      icon: <HomeIcon size={13} />,
+      icon: <HomeIcon size={20} />,
       label: "Go home - dash",
       id: "dash",
       href: "/dash",
     },
     {
-      icon: <PlayIcon size={13} />,
+      icon: <PlayIcon size={20} />,
       label: "Sentence review",
       id: "sentence",
       href: "/sentence",
     },
     {
-      icon: <FileIcon size={13} />,
+      icon: <FileIcon size={20} />,
       label: "Writing practice",
       id: "practice",
       href: "/practice",
@@ -60,12 +60,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${lexend.variable} ${dmMono.variable} relative antialiased font-sans bg-bg-default min-h-[100dvh] px-large`}
+        className={`${lexend.variable} ${dmMono.variable}relative antialiased font-sans bg-bg-default min-h-[100dvh] px-large`}
       >
         <ReactQueryProvider>
           <LoggedUserProvider userId={session?.user?.id ?? ""}>
             <PostHogProvider>
-              <div className={"mr-xLarge"}>{children}</div>
+              <div className={"md:mr-xLarge"}>{children}</div>
               {session && <NavBar position="left" items={sideBarItems} />}
 
               {session && (

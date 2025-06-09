@@ -60,8 +60,8 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({ session }) => {
 
 const Trigger = () => {
   return (
-    <div className="flex rounded-xl border border-border-default p-[12px] shadow-md hover:cursor-pointer">
-      <PersonIcon size={16} />
+    <div className="flex rounded-xl border-[0.5px] border-border-default bg-white/0 backdrop-blur-lg p-[12px] shadow-xl hover:cursor-pointer">
+      <PersonIcon size={20} />
     </div>
   );
 };

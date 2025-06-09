@@ -41,6 +41,10 @@ export default function Page() {
   }, [data, selectedSentenceIdx]);
 
   useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
     setFullPageLoading?.(isLoading);
   }, [isLoading, setFullPageLoading]);
 
@@ -110,7 +114,7 @@ export default function Page() {
 
   return (
     <motion.div
-      className={`w-full flex flex-col items-center justify-center h-[100vh] gap-xLarge`}
+      className={`flex flex-col w-full items-center justify-center h-[100vh] gap-xLarge`}
       layout={"position"}
     >
       {selectedSentence && (
@@ -155,12 +159,12 @@ const Sentence: React.FC<SentenceProps> = ({
   return (
     <motion.div
       layout={"position"}
-      className={"flex flex-col items-center gap-xLarge w-[80ch]"}
+      className={"flex flex-col items-center gap-xLarge md:w-[80ch] w-[90%] "}
     >
       <motion.p
         layout={"position"}
         className={
-          "flex w-full flex-1 text-[60px] font-medium text-text-dark text-pretty"
+          "flex w-full flex-1 text-4xl text-center leading-tight font-medium text-text-dark text-pretty"
         }
       >
         {contentValue}
@@ -171,7 +175,7 @@ const Sentence: React.FC<SentenceProps> = ({
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
           transition={{ duration: 0.3, delay: 0.5 }}
-          className={"flex w-full justify-between"}
+          className={"flex w-full justify-between overflow-y-scroll"}
         >
           <Button variant="secondary" onClick={onSkip}>
             Skip
@@ -212,15 +216,21 @@ const Definition: React.FC<DefinitionProps> = ({
         "flex flex-col item-center justify-center gap-large w-full max-w-[600px] xl:max-w-[850px]"
       }
     >
-      <Card className={"flex items-center w-full gap-large"}>
+      <Card
+        className={
+          "flex items-center w-full gap-large max-h-[50dvh] md:max-h-[90dvh]"
+        }
+      >
         <p
           className={
-            "text-large font-medium wrap-pretty max-w-[600px] text-center"
+            "text-large font-medium wrap-pretty md:max-w-[600px] w-full text-center"
           }
         >
           {sentenceDefinition}
         </p>
-        <div className={"flex flex-col w-full gap-small"}>
+        <div
+          className={"flex flex-col w-full gap-small h-full overflow-y-scroll"}
+        >
           {words.map((w) => {
             return (
               <div key={w.word} className={"flex flex-col"}>
