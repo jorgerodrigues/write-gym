@@ -24,8 +24,8 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Write gym!",
-  description: "Do it and learn faster!",
+  title: "FalaGym",
+  description: "Do it. Get better. Faster!",
 };
 
 export default async function RootLayout({
