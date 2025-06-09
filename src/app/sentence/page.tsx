@@ -14,7 +14,7 @@ export default function Page() {
   const [showDefinition, setShowDefinition] = useState(false);
   const [selectedSentenceIdx, setSelectedSentenceIdx] = useState(0);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
-  const { user } = useUser();
+  const { user, setFullPageLoading } = useUser();
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["cards", user.id],
@@ -39,6 +39,10 @@ export default function Page() {
       setSelectedCardId(cardInfo.id);
     }
   }, [data, selectedSentenceIdx]);
+
+  useEffect(() => {
+    setFullPageLoading?.(isLoading);
+  }, [isLoading, setFullPageLoading]);
 
   const handleNextSentence = async () => {
     if (!data?.length) return;
@@ -104,20 +108,11 @@ export default function Page() {
     };
   }, [data, selectedSentenceIdx]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <motion.div
       className={`w-full flex flex-col items-center justify-center h-[100vh] gap-xLarge`}
       layout={"position"}
     >
-      {!selectedSentence && (
-        <div>
-          Generating new sentences. Wait a couple of minutes or come back later
-        </div>
-      )}
       {selectedSentence && (
         <>
           <Sentence

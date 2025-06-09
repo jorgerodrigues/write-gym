@@ -5,8 +5,9 @@ import { apiFetcher } from "@/lib/api/apiFetcher";
 import { APIReturnType } from "@/types/api/apiReturnType";
 import { LanguagePreferenceResponse } from "@/features/user-settings/types";
 import { useQuery } from "@tanstack/react-query";
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import { useOnboardingRedirect } from "@/hooks/useOnboardingRedirect";
+import { FullPageSpinner } from "@/components/FullPageSpinner";
 
 type UserContext = {
   id: string;
@@ -22,6 +23,7 @@ type UserContext = {
 type LoggedUserProviderState = {
   user: UserContext;
   loading: boolean;
+  setFullPageLoading?: (loading: boolean) => void;
 };
 
 export const LoggedUserContext = createContext<LoggedUserProviderState>({
@@ -36,6 +38,7 @@ export const LoggedUserContext = createContext<LoggedUserProviderState>({
     nativeLanguage: "en",
   },
   loading: true,
+  setFullPageLoading: () => {},
 });
 
 interface LoggedUserProviderProps {
@@ -47,6 +50,7 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
   userId,
   children,
 }) => {
+  const [fullPageLoading, setFullPageLoading] = useState(false);
   const { data: userInfo, isLoading: isLoadingUserInfo } = useQuery({
     enabled: Boolean(userId),
     staleTime: 30 * 1000,
@@ -102,9 +106,16 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
         nativeLanguage: user.nativeLanguage || "en",
         onboardingCompleted: user.onboardingCompleted,
       },
-      loading: isLoading,
+      loading: isLoading || fullPageLoading,
+      setFullPageLoading,
     };
-  }, [userInfo, languagePreference, isLoadingUserInfo, isLoadingLanguage]);
+  }, [
+    isLoadingUserInfo,
+    isLoadingLanguage,
+    userInfo?.data,
+    languagePreference?.data?.languageCode,
+    fullPageLoading,
+  ]);
 
   useOnboardingRedirect({
     userInfoReceived: Boolean(userInfo?.data),
@@ -114,6 +125,7 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
 
   return (
     <LoggedUserContext.Provider value={stateValue}>
+      <FullPageSpinner show={stateValue.loading} />
       {children}
     </LoggedUserContext.Provider>
   );

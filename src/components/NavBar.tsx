@@ -1,5 +1,6 @@
 "use client";
 
+import { useUser } from "@/providers/LoggedUserProvider";
 import { usePathname, useRouter } from "next/navigation";
 import { FC, ReactNode } from "react";
 
@@ -76,12 +77,15 @@ const NavItem: FC<NavItemProps> = ({
 const NavBar: FC<NavBarProps> = ({ items, onNavClick, position = "right" }) => {
   const pathname = usePathname();
   const router = useRouter();
+  const { setFullPageLoading } = useUser();
 
   const handleNavClick = (href: string) => {
     if (onNavClick) {
       onNavClick(href);
     } else {
+      setFullPageLoading?.(true);
       router.push(href);
+      setFullPageLoading?.(false);
     }
   };
 
