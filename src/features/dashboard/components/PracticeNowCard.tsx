@@ -9,7 +9,7 @@ import Link from "next/link";
 export const PracticeNowCard = () => {
   const { user } = useUser();
   const { language } = user;
-  const languageName = languageNameFromCode(language ?? "");
+  const languageName = language ? languageNameFromCode(language) : "";
 
   return (
     <Card>
