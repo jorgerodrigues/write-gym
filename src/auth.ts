@@ -1,13 +1,21 @@
-import NextAuth, { Profile, Session } from "next-auth";
+import NextAuth, { Profile } from "next-auth";
 import Google from "next-auth/providers/google";
 import { profile } from "./features/profile";
-import { AdapterSession, AdapterUser } from "next-auth/adapters";
 import { JWT } from "next-auth/jwt";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     session: async ({ session, token }) => {
-      return await addUserIdToSession({ session, token });
+      if (token.userId && session) {
+        session.user.id = token.userId as string;
+      }
+      return session;
+    },
+    jwt: async ({ trigger, token }) => {
+      if (trigger === "signIn" || trigger === "signUp") {
+        return await addUserIdToToken({ token });
+      }
+      return token;
     },
     signIn: async ({ profile }) => {
       return await handleSignIn(profile);
@@ -49,23 +57,19 @@ const checkUserExists = async (email: string) => {
   }
 };
 
-const addUserIdToSession = async ({
-  session,
-  token,
-}: {
-  session: {
-    user: AdapterUser;
-  } & AdapterSession &
-    Session;
-  token: JWT;
-}) => {
-  const email = token.email;
-  if (!email) return session;
+const addUserIdToToken = async ({ token }: { token: JWT }) => {
+  try {
+    const email = token.email;
+    if (!email) return token;
 
-  const user = await profile.getUserInfo({ email });
-  if (!user.data) return session;
+    const user = await profile.getUserInfo({ email });
+    if (!user.data) return token;
 
-  session.user.id = user?.data?.id;
+    token.userId = user?.data?.id;
 
-  return session;
+    return token;
+  } catch (e) {
+    console.error("Error adding user ID to token:", e);
+    return token;
+  }
 };
