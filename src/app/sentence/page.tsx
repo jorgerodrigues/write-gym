@@ -159,12 +159,14 @@ const Sentence: React.FC<SentenceProps> = ({
   return (
     <motion.div
       layout={"position"}
-      className={"flex flex-col items-center gap-xLarge md:w-[80ch] w-[90%] "}
+      className={
+        "flex flex-col items-center gap-xLarge md:w-[80ch] w-[90%] overflow-auto"
+      }
     >
       <motion.p
         layout={"position"}
         className={
-          "flex w-full flex-1 text-4xl text-center leading-tight font-medium text-text-dark text-pretty"
+          "flex w-full overflow-y-scroll max-h-[75dvh] flex-1 text-3xl text-center leading-tight font-medium text-text-dark text-pretty"
         }
       >
         {contentValue}

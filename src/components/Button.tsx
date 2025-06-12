@@ -38,9 +38,9 @@ export const Button: React.FC<ButtonProps> = ({
 
   // Size styles
   const sizes = {
-    sm: "px-8 py-2 text-caption",
-    md: "px-10 py-3 text-base",
-    lg: "px-12 py-5 text-number",
+    sm: "px-8 py-1 text-caption",
+    md: "px-8 py-2 text-base",
+    lg: "px-8 py-3 text-number",
   };
 
   // Icon sizes based on button size
