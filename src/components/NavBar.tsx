@@ -1,8 +1,11 @@
 "use client";
 
 import { useUser } from "@/providers/LoggedUserProvider";
+import { Session } from "next-auth";
 import { usePathname, useRouter } from "next/navigation";
 import { FC, ReactNode } from "react";
+import { ProfileButton } from "./ProfileButton";
+import { auth } from "@/auth";
 
 type NavItemVariant = "active" | "default";
 type NavItemState = "disabled" | "enabled";
@@ -26,6 +29,7 @@ interface NavBarProps {
   items: NavItem[];
   onNavClick?: (href: string) => void;
   position?: "right" | "left";
+  session?: Session | null;
 }
 
 const navItemStyles = {
@@ -77,7 +81,13 @@ const NavItem: FC<NavItemProps> = ({
   );
 };
 
-const NavBar: FC<NavBarProps> = ({ items, onNavClick, position = "right" }) => {
+("");
+const NavBar: FC<NavBarProps> = ({
+  items,
+  onNavClick,
+  position = "right",
+  session,
+}) => {
   const pathname = usePathname();
   const router = useRouter();
   const { setFullPageLoading } = useUser();
@@ -114,6 +124,7 @@ const NavBar: FC<NavBarProps> = ({ items, onNavClick, position = "right" }) => {
             state={getItemState(item.disabled)}
           />
         ))}
+        <ProfileButton session={session} />
       </div>
     </nav>
   );

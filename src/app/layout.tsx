@@ -6,7 +6,6 @@ import { auth } from "../auth";
 import { PlayIcon } from "@/icons/Play";
 import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
 import { FileIcon } from "@/icons/FileIcon";
-import { ProfileButton } from "@/components/ProfileButton";
 import { LoggedUserProvider } from "@/providers/LoggedUserProvider";
 import { HomeIcon } from "@/icons/Home";
 import { PostHogProvider } from "@/providers/PostHogProvider";
@@ -60,18 +59,18 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${lexend.variable} ${dmMono.variable}relative antialiased font-sans bg-bg-default min-h-[100dvh] px-large`}
+        className={`${lexend.variable} ${dmMono.variable}relative antialiased font-sans bg-bg-default min-h-[100dvh] p-large overflow-auto`}
       >
         <ReactQueryProvider>
           <LoggedUserProvider userId={session?.user?.id ?? ""}>
             <PostHogProvider>
-              <div className={"md:mr-xLarge"}>{children}</div>
-              {session && <NavBar position="left" items={sideBarItems} />}
-
+              <div className={"mb-xLarge md:mb-0 md:mr-xLarge"}>{children}</div>
               {session && (
-                <div className={"absolute bottom-small left-small"}>
-                  <ProfileButton session={session} />
-                </div>
+                <NavBar
+                  position="left"
+                  items={sideBarItems}
+                  session={session}
+                />
               )}
             </PostHogProvider>
           </LoggedUserProvider>

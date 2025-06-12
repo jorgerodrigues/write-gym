@@ -56,7 +56,7 @@ export const Popover: React.FC<PopoverProps> = ({
   // Content container styles
   const contentBaseClasses = [
     "z-50 origin-[var(--radix-popover-content-transform-origin)]",
-    "bg-bg-white ",
+    "bg-bg-white backdrop-blur-sm",
     "rounded-xl",
     "outline-none",
     padding ? "p-small" : "",

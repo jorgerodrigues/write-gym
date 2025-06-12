@@ -5,6 +5,7 @@ import { Session } from "next-auth";
 import Popover from "./Popover";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
 type ProfileButtonProps = {
   session?: Session | null;
@@ -12,6 +13,22 @@ type ProfileButtonProps = {
 
 export const ProfileButton: React.FC<ProfileButtonProps> = ({ session }) => {
   const router = useRouter();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    if (typeof window === "undefined") {
+      return;
+    }
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  console.log({ isMobile });
 
   if (!session) {
     return null;
@@ -46,12 +63,14 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({ session }) => {
     },
   ];
 
+  // function for determining if we are on mobile or larger screens
+
   return (
     <Popover
       trigger={<Trigger />}
       options={options}
       showArrow={false}
-      side="left"
+      side={isMobile ? "top" : "right"}
       align="end"
       title={title}
     />
@@ -60,7 +79,7 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({ session }) => {
 
 const Trigger = () => {
   return (
-    <div className="flex rounded-xl border-[0.5px] border-border-default bg-white/0 backdrop-blur-lg p-[12px] shadow-xl hover:cursor-pointer">
+    <div className="flex  p-[12px]  hover:cursor-pointer border-l md:border-t md:border-l-0 border-default">
       <PersonIcon size={20} />
     </div>
   );

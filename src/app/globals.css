@@ -13,7 +13,7 @@ body {
     font-size: 16px;
     font-weight: 300;
     color: var(--foreground);
-    scrollbar-gutter: stable;
+    scrollbar-gutter: stable both-edges;
     scrollbar-width: thin;
     scrollbar-color: var(--foreground) transparent;
     scroll-behavior: smooth;
