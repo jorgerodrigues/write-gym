@@ -5,7 +5,7 @@ import { Session } from "next-auth";
 import Popover from "./Popover";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 type ProfileButtonProps = {
   session?: Session | null;
@@ -13,22 +13,7 @@ type ProfileButtonProps = {
 
 export const ProfileButton: React.FC<ProfileButtonProps> = ({ session }) => {
   const router = useRouter();
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    if (typeof window === "undefined") {
-      return;
-    }
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  console.log({ isMobile });
+  const isMobile = useIsMobile();
 
   if (!session) {
     return null;
