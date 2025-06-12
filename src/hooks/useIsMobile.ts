@@ -10,6 +10,8 @@ export const useIsMobile = () => {
     if (typeof window === "undefined") {
       return;
     }
+    // Initial run, before the first resize event
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
