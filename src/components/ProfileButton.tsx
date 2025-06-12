@@ -5,7 +5,7 @@ import { Session } from "next-auth";
 import Popover from "./Popover";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 type ProfileButtonProps = {
   session?: Session | null;

@@ -5,7 +5,6 @@ import { Session } from "next-auth";
 import { usePathname, useRouter } from "next/navigation";
 import { FC, ReactNode } from "react";
 import { ProfileButton } from "./ProfileButton";
-import { auth } from "@/auth";
 
 type NavItemVariant = "active" | "default";
 type NavItemState = "disabled" | "enabled";
