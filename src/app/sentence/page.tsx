@@ -114,7 +114,7 @@ export default function Page() {
 
   return (
     <motion.div
-      className={`flex flex-col w-full items-center justify-center h-[100vh] px-4`}
+      className={`flex flex-col w-full items-center justify-center h-full md:min-h-[80vh] p-large`}
       layout={"position"}
     >
       {selectedSentence && (

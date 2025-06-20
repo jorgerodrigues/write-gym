@@ -56,7 +56,7 @@ export const Popover: React.FC<PopoverProps> = ({
   // Content container styles
   const contentBaseClasses = [
     "z-50 origin-[var(--radix-popover-content-transform-origin)]",
-    "bg-bg-white backdrop-blur-sm",
+    "bg-bg-white backdrop-blur-md",
     "rounded-xl",
     "outline-none",
     padding ? "p-small" : "",
@@ -80,7 +80,7 @@ export const Popover: React.FC<PopoverProps> = ({
             key={option.id}
             onClick={option.onClick}
             disabled={option.disabled}
-            className={option.className}
+            className={option.className + " " + "hover:bg-red-500"}
           >
             {typeof option.item === "string" ? (
               <span>{option.item}</span>
