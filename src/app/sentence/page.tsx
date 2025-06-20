@@ -9,6 +9,7 @@ import { Card as CardType } from "@/features/card/types";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
 import { useUser } from "@/providers/LoggedUserProvider";
+import { useTranslations } from "next-intl";
 
 export default function Page() {
   const [showDefinition, setShowDefinition] = useState(false);
@@ -34,9 +35,12 @@ export default function Page() {
   });
 
   useEffect(() => {
-    const cardInfo = data?.[selectedSentenceIdx];
-    if (cardInfo) {
-      setSelectedCardId(cardInfo.id);
+    // Only run this effect when data is available and not empty
+    if (data && data.length > 0) {
+      const cardInfo = data[selectedSentenceIdx];
+      if (cardInfo) {
+        setSelectedCardId(cardInfo.id);
+      }
     }
   }, [data, selectedSentenceIdx]);
 
@@ -47,6 +51,31 @@ export default function Page() {
 
     setFullPageLoading?.(isLoading);
   }, [isLoading, setFullPageLoading]);
+
+  const selectedSentence = useMemo(() => {
+    if (!data || data.length === 0) {
+      return null;
+    }
+
+    if (selectedSentenceIdx < 0) {
+      return null;
+    }
+
+    const rawData = !data?.[selectedSentenceIdx]
+      ? data?.[0]
+      : data?.[selectedSentenceIdx];
+
+    return {
+      id: rawData.id,
+      sentence: rawData.front,
+      translation: rawData.back,
+      definitions: rawData?.sentence?.words?.map((word) => ({
+        id: word.id,
+        word: word.word,
+        definition: word.definition,
+      })),
+    };
+  }, [data, selectedSentenceIdx]);
 
   const handleNextSentence = async () => {
     if (!data?.length) return;
@@ -83,35 +112,6 @@ export default function Page() {
     handleNextSentence();
   };
 
-  const selectedSentence = useMemo(() => {
-    if (!data) {
-      return null;
-    }
-    if (selectedSentenceIdx > data?.length - 1) {
-      return null;
-    }
-
-    if (selectedSentenceIdx < 0) {
-      return null;
-    }
-
-    if (!data?.[selectedSentenceIdx]) {
-      return null;
-    }
-
-    const rawData = data[selectedSentenceIdx];
-    return {
-      id: rawData.id,
-      sentence: rawData.front,
-      translation: rawData.back,
-      definitions: rawData?.sentence?.words?.map((word) => ({
-        id: word.id,
-        word: word.word,
-        definition: word.definition,
-      })),
-    };
-  }, [data, selectedSentenceIdx]);
-
   return (
     <motion.div
       className={`flex flex-col w-full items-center justify-center h-full md:min-h-[80vh] p-large`}
@@ -119,6 +119,7 @@ export default function Page() {
     >
       {selectedSentence && (
         <div
+          key={selectedSentence.id ?? "loading"}
           className={
             "flex flex-col md:max-w-[600px] xl:max-w-[850px] gap-xLarge w-full"
           }
@@ -160,6 +161,7 @@ const Sentence: React.FC<SentenceProps> = ({
   answerDisplayed,
 }) => {
   const contentValue = useAnimatedText(content);
+  const t = useTranslations("sentence");
 
   return (
     <motion.div
@@ -170,7 +172,7 @@ const Sentence: React.FC<SentenceProps> = ({
       <motion.p
         layout={"position"}
         className={
-          "w-full overflow-y-scroll max-h-[75dvh] text-3xl text-center leading-tight font-medium text-text-dark text-pretty"
+          "w-full max-h-[75dvh] text-3xl text-center leading-tight font-medium text-text-dark text-pretty"
         }
         style={{ width: "100%", minWidth: "100%" }}
       >
@@ -186,10 +188,10 @@ const Sentence: React.FC<SentenceProps> = ({
           style={{ width: "100%" }}
         >
           <Button variant="secondary" onClick={onSkip}>
-            Skip
+            {t("skip")}
           </Button>
           <Button variant="primary" onClick={onShowAnswer}>
-            Show answer
+            {t("show-answer")}
           </Button>
         </motion.div>
       )}
@@ -215,6 +217,8 @@ const Definition: React.FC<DefinitionProps> = ({
   onWrong,
   onRight,
 }) => {
+  const t = useTranslations("sentence");
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -249,10 +253,10 @@ const Definition: React.FC<DefinitionProps> = ({
       </Card>
       <div className={"flex w-full justify-between"}>
         <Button variant="secondary" onClick={onWrong}>
-          Wrong
+          {t("wrong")}
         </Button>
         <Button variant="primary" onClick={onRight}>
-          Correct
+          {t("right")}
         </Button>
       </div>
     </motion.div>

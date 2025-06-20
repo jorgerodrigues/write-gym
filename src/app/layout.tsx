@@ -9,6 +9,8 @@ import { FileIcon } from "@/icons/FileIcon";
 import { LoggedUserProvider } from "@/providers/LoggedUserProvider";
 import { HomeIcon } from "@/icons/Home";
 import { PostHogProvider } from "@/providers/PostHogProvider";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale } from "next-intl/server";
 
 const lexend = Lexend({
   variable: "--font-lexend",
@@ -33,6 +35,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
+  const lang = await getLocale();
 
   const sideBarItems = [
     {
@@ -57,7 +60,7 @@ export default async function RootLayout({
   ];
 
   return (
-    <html lang="en">
+    <html lang={lang}>
       <body
         className={`${lexend.variable} ${dmMono.variable} relative antialiased font-sans bg-bg-default min-h-[100dvh] `}
       >
@@ -67,20 +70,22 @@ export default async function RootLayout({
           <ReactQueryProvider>
             <LoggedUserProvider userId={session?.user?.id ?? ""}>
               <PostHogProvider>
-                <div
-                  className={
-                    "my-xLarge md:my-0 md:mr-xLarge md:px-xxLarge h-[100%] min-h-[80dvh]"
-                  }
-                >
-                  {children}
-                </div>
-                {session && (
-                  <NavBar
-                    position="left"
-                    items={sideBarItems}
-                    session={session}
-                  />
-                )}
+                <NextIntlClientProvider>
+                  <div
+                    className={
+                      "my-xLarge md:my-0 md:mr-xLarge md:px-xxLarge h-[100%] min-h-[80dvh]"
+                    }
+                  >
+                    {children}
+                  </div>
+                  {session && (
+                    <NavBar
+                      position="left"
+                      items={sideBarItems}
+                      session={session}
+                    />
+                  )}
+                </NextIntlClientProvider>
               </PostHogProvider>
             </LoggedUserProvider>
           </ReactQueryProvider>
