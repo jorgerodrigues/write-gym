@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useMemo, useState } from "react";
 import { useOnboardingRedirect } from "@/hooks/useOnboardingRedirect";
 import { FullPageSpinner } from "@/components/FullPageSpinner";
+import { setUserLanguageCookie } from "@/utils/cookies/userLanguageCookies";
 
 type UserContext = {
   id: string;
@@ -93,6 +94,11 @@ export const LoggedUserProvider: React.FC<LoggedUserProviderProps> = ({
 
     const user = userInfo.data;
     const language = languagePreference?.data?.languageCode || null;
+    const nativeLanguage = user.nativeLanguage.toLowerCase() || "en";
+
+    if (nativeLanguage) {
+      setUserLanguageCookie(nativeLanguage);
+    }
 
     return {
       user: {

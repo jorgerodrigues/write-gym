@@ -84,7 +84,8 @@ const possibleTopics = [
 export const generateCardsForUser = async (
   userId: string,
   language: string,
-  nativeLanguage: string = "en"
+  nativeLanguage: string = "en",
+  amount?: number
 ) => {
   const structure_1 =
     possibleStructures[Math.floor(Math.random() * possibleStructures.length)];
@@ -102,7 +103,7 @@ export const generateCardsForUser = async (
   const topic_2 =
     possibleTopics[Math.floor(Math.random() * possibleTopics.length)];
 
-  const amount_number = "10";
+  const amount_number = amount?.toString() || "10";
 
   const promptStr = generateSentencesPrompt;
 

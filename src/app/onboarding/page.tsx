@@ -10,8 +10,10 @@ import { useMutation } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function IntroPage() {
+  const t = useTranslations();
   const router = useRouter();
   const { user } = useUser();
   const [usersLanguage, setUsersLanguage] = useState<string | null>(null);
@@ -137,7 +139,7 @@ export default function IntroPage() {
               }}
             >
               <LanguageSelector
-                titleContent={"Which one of these languages do you speak best?"}
+                titleContent={t("onboarding.which-native-language")}
                 possibleLanguages={possibleBaseLanguages}
                 selectedLanguage={usersLanguage ?? ""}
                 onSelectLanguage={setUsersLanguage}
@@ -161,7 +163,7 @@ export default function IntroPage() {
               }}
             >
               <LanguageSelector
-                titleContent={"Which one language would you like to practice?"}
+                titleContent={t("onboarding.which-language-learn")}
                 possibleLanguages={possibleLanguagesToLearn}
                 selectedLanguage={languageToLearn ?? ""}
                 onSelectLanguage={setLanguageToLearn}
@@ -175,14 +177,14 @@ export default function IntroPage() {
             disabled={!possibleToMoveBack()}
             onClick={handlePrevStep}
           >
-            Go back
+            {t("basic.go-back")}
           </Button>
           <Button
             variant="primary"
             disabled={!possibleToMoveForward()}
             onClick={handleNextStep}
           >
-            Next
+            {t("basic.next")}
           </Button>
         </div>
       </div>

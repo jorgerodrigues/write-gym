@@ -1,0 +1,21 @@
+{
+  "basic": {
+    "go-back": "Voltar",
+    "next": "Avançar"
+  },
+  "dash": {
+    "button-practice-now": "Praticar agora",
+    "start-practicing": "Comece a praticar {language}",
+    "start-practicing-description": "Comece a praticar agora mesmo. Vamos melhorar o seu {language}"
+  },
+  "onboarding": {
+    "which-language-learn": "Qual língua você gostaria de praticar?",
+    "which-native-language": "Qual é a sua língua nativa? (ou aquela com a qual você se sente mais confortável)"
+  },
+  "sentence": {
+    "skip": "Pular",
+    "show-answer": "Mostrar resposta",
+    "wrong": "Errado",
+    "right": "Correto"
+  }
+}
