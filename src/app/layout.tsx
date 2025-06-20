@@ -64,7 +64,9 @@ export default async function RootLayout({
         <ReactQueryProvider>
           <LoggedUserProvider userId={session?.user?.id ?? ""}>
             <PostHogProvider>
-              <div className={"mb-xLarge md:mb-0 md:mr-xLarge"}>{children}</div>
+              <div className={"mb-xLarge md:mb-0 md:mr-xLarge md:px-xxLarge"}>
+                {children}
+              </div>
               {session && (
                 <NavBar
                   position="left"
