@@ -80,7 +80,7 @@ export const Popover: React.FC<PopoverProps> = ({
             key={option.id}
             onClick={option.onClick}
             disabled={option.disabled}
-            className={option.className + " " + "hover:bg-red-500"}
+            className={option.className}
           >
             {typeof option.item === "string" ? (
               <span>{option.item}</span>
