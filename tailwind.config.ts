@@ -51,6 +51,7 @@ export default {
         small: "16px",
         large: "24px",
         xLarge: "48px",
+        xxLarge: "64px",
       },
       maxWidth: {
         content: "42rem", // 672px - our main content width

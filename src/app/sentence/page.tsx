@@ -114,11 +114,16 @@ export default function Page() {
 
   return (
     <motion.div
-      className={`flex flex-col w-full items-center justify-center h-[100vh] gap-xLarge`}
+      className={`flex flex-col w-full items-center justify-center h-[100vh] px-4`}
       layout={"position"}
     >
       {selectedSentence && (
-        <>
+        <div
+          className={
+            "flex flex-col md:max-w-[600px] xl:max-w-[850px] gap-xLarge w-full"
+          }
+          style={{ width: "100%" }}
+        >
           <Sentence
             content={selectedSentence?.sentence ?? ""}
             onSkip={handleSkip}
@@ -135,7 +140,7 @@ export default function Page() {
               />
             )}
           </AnimatePresence>
-        </>
+        </div>
       )}
     </motion.div>
   );
@@ -159,15 +164,15 @@ const Sentence: React.FC<SentenceProps> = ({
   return (
     <motion.div
       layout={"position"}
-      className={
-        "flex flex-col items-center gap-xLarge md:w-[80ch] w-[90%] overflow-auto"
-      }
+      className={"flex flex-col items-center gap-xLarge overflow-auto w-full"}
+      style={{ width: "100%" }}
     >
       <motion.p
         layout={"position"}
         className={
-          "flex w-full overflow-y-scroll max-h-[75dvh] flex-1 text-3xl text-center leading-tight font-medium text-text-dark text-pretty"
+          "w-full overflow-y-scroll max-h-[75dvh] text-3xl text-center leading-tight font-medium text-text-dark text-pretty"
         }
+        style={{ width: "100%", minWidth: "100%" }}
       >
         {contentValue}
       </motion.p>
@@ -177,7 +182,8 @@ const Sentence: React.FC<SentenceProps> = ({
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
           transition={{ duration: 0.3, delay: 0.5 }}
-          className={"flex w-full justify-between overflow-y-scroll"}
+          className={"flex w-full justify-between"}
+          style={{ width: "100%" }}
         >
           <Button variant="secondary" onClick={onSkip}>
             Skip
@@ -214,9 +220,7 @@ const Definition: React.FC<DefinitionProps> = ({
       initial={{ opacity: 0 }}
       exit={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className={
-        "flex flex-col item-center justify-center gap-large w-full max-w-[600px] xl:max-w-[850px]"
-      }
+      className={"flex flex-col item-center justify-center gap-large w-full"}
     >
       <Card
         className={
