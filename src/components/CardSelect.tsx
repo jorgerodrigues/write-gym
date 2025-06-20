@@ -47,13 +47,12 @@ const CardSelectOption: React.FC<CardSelectOptionProps> = ({
   const baseStyles = [
     "flex flex-col w-full",
     "rounded-lg",
-    "bg-white",
     "backdrop-blur-xl",
     sizes[size],
     "border",
     isSelected
       ? "border-control-cta border bg-control-cta/50"
-      : "border-border-default",
+      : "bg-white border-border-default",
     "shadow",
     "transition-all hover:shadow-xl",
     "cursor-pointer",
@@ -116,7 +115,7 @@ export const CardSelect: React.FC<CardSelectProps> = ({
           <CardSelectOption
             key={option.id}
             option={option}
-            isSelected={selectedId === option.id}
+            isSelected={selectedId?.toLowerCase() === option.id.toLowerCase()}
             onSelect={() => handleSelect(option.id)}
             size={size}
           />
