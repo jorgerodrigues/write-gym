@@ -46,7 +46,7 @@ const navItemStyles = {
 const navBarStyles = {
   container:
     "fixed z-50 bg-white/10 shadow-xl backdrop-blur-md px-xSmall py-xSmall md:py-small rounded-full " +
-    "bottom-4 left-1/2 -translate-x-1/2 " +
+    "top-4 left-1/2 -translate-x-1/2 " +
     "md:top-1/2 md:-translate-y-1/2 md:translate-x-0 md:bottom-auto md:left-auto",
   position: {
     left: "md:left-4",

@@ -64,7 +64,11 @@ export default async function RootLayout({
         <ReactQueryProvider>
           <LoggedUserProvider userId={session?.user?.id ?? ""}>
             <PostHogProvider>
-              <div className={"mb-xLarge md:mb-0 md:mr-xLarge md:px-xxLarge"}>
+              <div
+                className={
+                  "my-xLarge md:my-0 md:mr-xLarge md:px-xxLarge h-[100%] min-h-[80dvh]"
+                }
+              >
                 {children}
               </div>
               {session && (
