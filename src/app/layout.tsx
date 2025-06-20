@@ -59,28 +59,32 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${lexend.variable} ${dmMono.variable}relative antialiased font-sans bg-bg-default min-h-[100dvh] p-large overflow-auto`}
+        className={`${lexend.variable} ${dmMono.variable} relative antialiased font-sans bg-bg-default min-h-[100dvh] `}
       >
-        <ReactQueryProvider>
-          <LoggedUserProvider userId={session?.user?.id ?? ""}>
-            <PostHogProvider>
-              <div
-                className={
-                  "my-xLarge md:my-0 md:mr-xLarge md:px-xxLarge h-[100%] min-h-[80dvh]"
-                }
-              >
-                {children}
-              </div>
-              {session && (
-                <NavBar
-                  position="left"
-                  items={sideBarItems}
-                  session={session}
-                />
-              )}
-            </PostHogProvider>
-          </LoggedUserProvider>
-        </ReactQueryProvider>
+        {/* top brand color bar */}
+        <div className={"h-[6px] w-full absolute top-0 bg-control-cta"} />
+        <div className={"p-large overflow-auto"}>
+          <ReactQueryProvider>
+            <LoggedUserProvider userId={session?.user?.id ?? ""}>
+              <PostHogProvider>
+                <div
+                  className={
+                    "my-xLarge md:my-0 md:mr-xLarge md:px-xxLarge h-[100%] min-h-[80dvh]"
+                  }
+                >
+                  {children}
+                </div>
+                {session && (
+                  <NavBar
+                    position="left"
+                    items={sideBarItems}
+                    session={session}
+                  />
+                )}
+              </PostHogProvider>
+            </LoggedUserProvider>
+          </ReactQueryProvider>
+        </div>
       </body>
     </html>
   );
